@@ -4,6 +4,10 @@
     padding: 0;
     margin: 0; /* Убираем отступы */
 }
+@font-face {
+	font-family: 'Multiround Pro'; 
+	src: url("/Multiround\ Pro.otf");
+}
 html, body {
     height: 100%; /* Устанавливаем высоту на 100% для html и body */
 }
@@ -12,10 +16,6 @@ body {
     background: linear-gradient(135deg, #000000, #434343); /* Градиент */
     color: #fff; /* Цвет текста */ 
     min-height: 100vh;
-}
-@font-face {
-	font-family: 'Multiround Pro'; 
-	src: url(/Multiround\ Pro.otf);
 }
 
 .container {
