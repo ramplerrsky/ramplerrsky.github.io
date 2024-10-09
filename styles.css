@@ -4,18 +4,6 @@
     padding: 0;
     margin: 0; /* Убираем отступы */
 }
-.top-bar {
-    background-color: #4b4b4b; /* Цвет фона шторки */
-    color: white; /* Цвет текста */
-    padding: 10px 20px; /* Отступы */
-    display: flex;
-    justify-content: space-between; /* Расположение элементов */
-    align-items: center; /* Вертикальное выравнивание */
-}
-
-.top-bar-content h1 {
-    margin: 0; /* Убираем отступы у заголовка */
-}
 @font-face {
 	font-family: 'Multiround Pro'; 
 	src: url("/Multiround\ Pro.otf");
@@ -30,6 +18,18 @@ body {
     min-height: 100vh;
 }
 
+.top-bar {
+    background-color: #4b4b4b; /* Цвет фона шторки */
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Отступы */
+    display: flex;
+    justify-content: space-between; /* Расположение элементов */
+    align-items: center; /* Вертикальное выравнивание */
+}
+
+.top-bar-content h1 {
+    margin: 0; /* Убираем отступы у заголовка */
+}
 .container {
     max-width: 800px;
     margin: auto;
