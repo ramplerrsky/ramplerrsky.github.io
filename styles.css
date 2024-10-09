@@ -67,6 +67,23 @@ p {
     border-radius: 50%;
 }
 
+.pricing {
+    margin-top: 40px;
+}
+
+.pricing-columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 8px;
+    flex-basis: 30%;
+    text-align: center;
+}
+
 footer {
     text-align: center;
     margin-top: 20px;
@@ -91,6 +108,3 @@ footer {
 }
 
 @keyframes slideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
