@@ -2,15 +2,20 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    height: 100%; /* Устанавливаем высоту на 100% для html и body */
     margin: 0; /* Убираем отступы */
 }
-
+html, body {
+    height: 100%; /* Устанавливаем высоту на 100% для html и body */
+}
 body {
     font-family: 'Multiround Pro';
     background: linear-gradient(135deg, #000000, #434343); /* Градиент */
-    color: #fff; /* Цвет текста */
-    overflow: hidden; /* Отключаем прокрутку */
+    color: #fff; /* Цвет текста */ 
+    min-height: 100vh;
+}
+@font-face {
+	font-family: 'Multiround Pro'; 
+	src: url(/Multiround\ Pro.otf);
 }
 
 .container {
