@@ -66,8 +66,10 @@ p {
     width: 100%;
     max-width: 500px; /* Укажите желаемую ширину */
     height: auto;
-    border-radius: 10px; /* Легкая округленность */
+    border-radius: 10px; /* Легкая округлённость */
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    opacity: 0; /* Скрыть изображение по умолчанию */
+    animation: fadeInImage 1s forwards; /* Анимация появления изображения */
 }
 
 .pricing {
@@ -119,4 +121,9 @@ footer {
 @keyframes slideIn {
     from { transform: translateY(20px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInImage {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
