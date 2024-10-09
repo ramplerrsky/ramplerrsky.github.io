@@ -5,7 +5,7 @@
     margin: 0; /* Убираем отступы */
 }
 .top-bar {
-    background-color: #333; /* Цвет фона шторки */
+    background-color: #4b4b4b; /* Цвет фона шторки */
     color: white; /* Цвет текста */
     padding: 10px 20px; /* Отступы */
     display: flex;
