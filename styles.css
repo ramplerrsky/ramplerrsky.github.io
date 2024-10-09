@@ -43,7 +43,7 @@ p {
     background-color: #555;
     color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: 15px 30px;
     border-radius: 5px;
     text-decoration: none;
     font-size: 1.2em;
@@ -63,9 +63,10 @@ p {
 
 .rounded-image {
     width: 100%;
-    max-width: 300px; /* Укажите желаемую ширину */
+    max-width: 500px; /* Укажите желаемую ширину */
     height: auto;
-    border-radius: 50%;
+    border-radius: 10px; /* Легкая округленность */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .pricing {
