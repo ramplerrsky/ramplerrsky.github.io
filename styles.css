@@ -42,6 +42,7 @@ p {
 .button {
     position: relative;
     top: 10px;
+    left:240px;
     display: inline-block;
     background-color: #555;
     color: #fff;
@@ -55,7 +56,7 @@ p {
 .ey{
     position: relative;
     bottom: 15px;
-    left: 340px;
+    left: 200px;
 }
 .button:hover {
     background-color: #777;
