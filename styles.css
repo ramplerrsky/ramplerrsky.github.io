@@ -2,13 +2,15 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    height: 100%; /* Устанавливаем высоту на 100% для html и body */
+    margin: 0; /* Убираем отступы */
 }
 
 body {
     font-family: 'Multiround Pro';
-    background: linear-gradient(135deg, #000000, #434343);
-    color: #fff;
-    overflow: hidden;
+    background: linear-gradient(135deg, #000000, #434343); /* Градиент */
+    color: #fff; /* Цвет текста */
+    overflow: hidden; /* Отключаем прокрутку */
 }
 
 .container {
