@@ -40,6 +40,8 @@ p {
 }
 
 .button {
+    position: relative;
+    top: 10px;
     display: inline-block;
     background-color: #555;
     color: #fff;
@@ -51,7 +53,9 @@ p {
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 .ey{
-    padding: 0px 0px 0px 5px;
+    position: relative;
+    bottom: 15px;
+    left: 340px;
 }
 .button:hover {
     background-color: #777;
