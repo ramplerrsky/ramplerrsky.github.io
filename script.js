@@ -1,37 +1,133 @@
-const particlesContainer = document.querySelector('.particles');
+/* ---- particles.js config ---- */
 
-function createParticle() {
-    const particle = document.createElement('div');
-    particle.classList.add('particle');
-    
-    // Задаем случайные размеры и позиции
-    const size = Math.random() * 5 + 2; // Размер от 2 до 7 пикселей
-    particle.style.width = ${size}px;
-    particle.style.height = ${size}px;
-    
-    particle.style.left = ${Math.random() * window.innerWidth}px;
-    particle.style.top = ${Math.random() * window.innerHeight}px;
-    
-    // Добавляем частицу в контейнер
-    particlesContainer.appendChild(particle);
-    
-    // Анимация движения
-    const animationDuration = Math.random() * 5 + 5; // Длительность анимации от 5 до 10 секунд
-    particle.animate([
-        { transform: translateY(0) },
-        { transform: translateY(${window.innerHeight}px) }
-    ], {
-        duration: animationDuration * 1000,
-        easing: 'linear',
-        iterations: Infinity,
-        direction: 'normal'
-    });
-
-    // Удаляем частицу после завершения анимации
-    setTimeout(() => {
-        particle.remove();
-    }, animationDuration * 1000);
-}
-
-// Создаем частицы каждые 300 миллисекунд
-setInterval(createParticle, 300);
+particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 380,
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ffffff"
+      },
+      "shape": {
+        "type": "circle",
+        "stroke": {
+          "width": 0,
+          "color": "#000000"
+        },
+        "polygon": {
+          "nb_sides": 5
+        },
+        "image": {
+          "src": "img/github.svg",
+          "width": 100,
+          "height": 100
+        }
+      },
+      "opacity": {
+        "value": 0.5,
+        "random": false,
+        "anim": {
+          "enable": false,
+          "speed": 1,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 3,
+        "random": true,
+        "anim": {
+          "enable": false,
+          "speed": 40,
+          "size_min": 0.1,
+          "sync": false
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ffffff",
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 6,
+        "direction": "none",
+        "random": false,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false,
+        "attract": {
+          "enable": false,
+          "rotateX": 600,
+          "rotateY": 1200
+        }
+      }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "grab"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        },
+        "resize": true
+      },
+      "modes": {
+        "grab": {
+          "distance": 140,
+          "line_linked": {
+            "opacity": 1
+          }
+        },
+        "bubble": {
+          "distance": 400,
+          "size": 40,
+          "duration": 2,
+          "opacity": 8,
+          "speed": 3
+        },
+        "repulse": {
+          "distance": 200,
+          "duration": 0.4
+        },
+        "push": {
+          "particles_nb": 4
+        },
+        "remove": {
+          "particles_nb": 2
+        }
+      }
+    },
+    "retina_detect": true
+  });
+  
+  
+  /* ---- stats.js config ---- */
+  
+  var count_particles, stats, update;
+  stats = new Stats;
+  stats.setMode(0);
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.left = '0px';
+  stats.domElement.style.top = '0px';
+  document.body.appendChild(stats.domElement);
+  count_particles = document.querySelector('.js-count-particles');
+  update = function() {
+    stats.begin();
+    stats.end();
+    if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+      count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+    }
+    requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
