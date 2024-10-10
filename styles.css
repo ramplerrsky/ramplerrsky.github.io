@@ -14,6 +14,7 @@
     height: 100%; /* Занимаем полную высоту */
     background: linear-gradient(135deg, #000000, #434343); /* Градиент */
     overflow-y: auto; /* Позволяет прокручивать содержимое */
+    scroll-behavior: smooth;
 }
 .top-bar {
     background: linear-gradient(135deg, #1d1d1d31, #43434385); /* Градиент */
@@ -36,12 +37,14 @@ html, body {
     padding: 0;
     height: 100%; /* Занимаем полную высоту */
     overflow: hidden; /* Убираем двойной скролл */
+    scroll-behavior: smooth;
 }
 
 body {
     font-family: 'Multiround Pro';
     color: #fff; /* Цвет текста */ 
     overflow: hidden;
+    scroll-behavior: smooth;
 }
 .container {
     max-width: 800px;
