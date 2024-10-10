@@ -16,7 +16,7 @@
     overflow-y: auto; /* Позволяет прокручивать содержимое */
 }
 .top-bar {
-    background-color: #333; /* Цвет фона шторки */
+    background: linear-gradient(135deg, #1d1d1d31, #43434385); /* Градиент */
     color: white; /* Цвет текста */
     padding: 10px 20px; /* Отступы */
     display: flex;
