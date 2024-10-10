@@ -3,7 +3,6 @@
     margin: 0;
     padding: 0;
     margin: 0; /* Убираем отступы */
-    scroll-behavior: smooth;
 }
 #particles-js {
     position: absolute;
@@ -31,14 +30,26 @@
 }
 html, body {
     height: 100%; /* Устанавливаем высоту на 100% для html и body */
-    scroll-behavior: smooth;
+    width: 100%;
 }
+
 body {
     font-family: 'Multiround Pro';
     background: linear-gradient(135deg, #000000, #434343); /* Градиент */
     color: #fff; /* Цвет текста */ 
-    min-height: 100vh;
-    scroll-behavior: smooth;
+    position: absolute;
+    margin: 0;
+    height: 100vh;
+}
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #000000, #434343); /* Градиент */
+    z-index: -1; /* Поставьте фон ниже других элементов */
 }
 .container {
     max-width: 800px;
@@ -250,18 +261,4 @@ footer {
     from { opacity: 0; }
     to { opacity: 1; }
 }
-.particles {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* Чтобы частицы не мешали взаимодействию с другими элементами */
-}
 
-.particle {
-    position: absolute;
-    background-color: white;
-    border-radius: 50%;
-    opacity: 0.7;
-}
