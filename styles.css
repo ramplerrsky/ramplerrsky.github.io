@@ -64,13 +64,6 @@ p {
     animation: fadeIn 1.5s;
 }
 
-.description {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    animation: slideIn 1s forwards;
-}
-
 .button {
     position: relative;
     top: 10px;
@@ -84,6 +77,20 @@ p {
     text-decoration: none;
     font-size: 1.2em;
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.description{
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    animation: slideIn 1s forwards;
+}
+.about-us {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    animation: slideIn 1s forwards;
+    position: relative;
+    top:100px;
 }
 .ey{
     position: relative;
@@ -109,6 +116,25 @@ p {
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 .button1:hover {
+    background-color: #777;
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
+}
+.button2 {
+    font-family: 'Multiround Pro';
+    position: relative;
+    display: inline-block;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 20px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.2em;
+    left: 230px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.button2:hover {
     background-color: #777;
     transform: scale(1.05);
     box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
@@ -163,23 +189,27 @@ p {
 }
 .column:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.534);
 }
 .column1 {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 20px;
     border-radius: 10px;
     flex-basis: 30%;
-    width: 100px;
+    width: 90px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
     animation: fadeIn 1s forwards; /* Анимация появления изображения */
     position: relative;
     top: 30px;
 }
+#abo{
+    position: relative;
+    left:950px;
+}
 .column1:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.534);
 }
 .column2 {
     background-color: rgba(255, 255, 255, 0.1);
@@ -197,7 +227,7 @@ p {
     padding: 20px;
     border-radius: 10px;
     flex-basis: 30%;
-    width: 100px;
+    width: 90px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
     animation: fadeIn 1s forwards; /* Анимация появления изображения */
@@ -206,11 +236,11 @@ p {
 }
 .column3:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.534);
 }
 .column2:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.534);
 }
 .pricing-columns, .description-columns {
     display: flex;
@@ -219,7 +249,7 @@ p {
 
 .armor{
     position:relative;
-    top:70px;
+    top:110px;
 }
 footer {
     text-align: center;
@@ -229,7 +259,7 @@ footer {
 .socials {
     margin-bottom: 10px;
     position:relative;
-    top:84px;
+    top:120px;
 }
 
 .socials a {
