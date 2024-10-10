@@ -29,7 +29,7 @@
 }
 @font-face {
 	font-family: 'Multiround Pro'; 
-	src: url("/Multiround\ Pro.otf");
+	src: url("/Multiround Pro.otf");
 }
 html, body {
     margin: 0;
@@ -170,6 +170,7 @@ p {
     padding: 20px;
     border-radius: 10px;
     flex-basis: 30%;
+    width: 100px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
     animation: fadeIn 1s forwards; /* Анимация появления изображения */
@@ -196,6 +197,7 @@ p {
     padding: 20px;
     border-radius: 10px;
     flex-basis: 30%;
+    width: 100px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
     animation: fadeIn 1s forwards; /* Анимация появления изображения */
