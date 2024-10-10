@@ -63,7 +63,10 @@ p {
     font-size: 1.2em;
     animation: fadeIn 1.5s;
 }
-
+#feed{
+    position: relative;
+    left:10px;
+}
 .button {
     position: relative;
     top: 10px;
@@ -205,7 +208,11 @@ p {
 }
 #abo{
     position: relative;
-    left:950px;
+    left:1250px;
+}
+#aboutd{
+    position: relative;
+    left:350px;
 }
 .column1:hover {
     transform: scale(1.05);
