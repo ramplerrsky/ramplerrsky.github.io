@@ -104,7 +104,7 @@
 </div>
 
 <div id="mainScreen" class="noselect">
-    <div id="clickArea" class="noselect">0</div>
+    <div id="clickArea" class="noselect" onclick="test()">0</div>
     <div class="progressBar">
         <div class="progressBarFill"></div>
         <div class="progressBarText">0%</div>
@@ -112,6 +112,12 @@
 </div>
 
 <script>
+    function test(){
+        var audio = document.createElement('audio');
+        audio.setAttribute("autoplay","true");
+        audio.innerHTML = "<source src=\"audio/test.mp3\" type=\"audio/mpeg\">";
+        document.body.appendChild(audio);
+    }
     const startScreen = document.getElementById('startScreen');
     const mainScreen = document.getElementById('mainScreen');
     const nameInput = document.getElementById('nameInput');
