@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кликер</title>
+    <style>
+        .noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1e1e1e;
+            color: white;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+            overflow: hidden;
+            -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+        }
+        #startScreen, #mainScreen {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+        }
+        #nameInput {
+            padding: 15px 30px;
+            font-size: 24px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background-color: #282828;
+            color: white;
+        }
+        #clickArea {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #007bff;
+            position: relative;
+            font-size: 24px;
+            color: white;
+            text-align: center;
+            line-height: 200px;
+            user-select: none;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        #clickArea:hover {
+            background-color: #0056b3;
+        }
+        .animation {
+            position: absolute;
+            color: #00ff00;
+            font-size: 24px;
+            transition: transform 0.5s, opacity 0.5s;
+        }
+        .progressBar {
+            width: 100%;
+            height: 10px;
+            background-color: #333;
+            border-radius: 5px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            position: relative;
+            bottom: -20px;
+        }
+        .progressBarFill {
+            height: 100%;
+            background-color: #007bff;
+            width: 0%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="noselect">
+    <input type="text" id="nameInput" placeholder="Введите ваше имя">
+    <button id="submitName">Начать</button>
+</div>
+
+<div id="mainScreen" class="noselect">
+    <div id="clickArea" class="noselect">0</div>
+    <div class="progressBar">
+        <div class="progressBarFill"></div>
+        <div class="progressBarText">0%</div>
+    </div>
+</div>
+
+<script>
+    const startScreen = document.getElementById('startScreen');
+    const mainScreen = document.getElementById('mainScreen');
+    const nameInput = document.getElementById('nameInput');
+    const clickArea = document.getElementById('clickArea');
+    const submitName = document.getElementById('submitName');
+    const progressBarFill = document.querySelector(".progressBarFill");
+    const progressBarText = document.querySelector(".progressBarText");
+
+    let clickCount = 0;
+    let isClicking = false; // Флаг, чтобы отслеживать, кликаем ли мы
+
+    // Проверяем, есть ли сохраненное имя и количество кликов
+    const savedName = localStorage.getItem('userName');
+    const savedClicks = localStorage.getItem('clicks');
+
+    if (savedName) {
+        startScreen.style.display = 'none';
+        mainScreen.style.display = 'flex';
+        clickCount = savedClicks ? parseInt(savedClicks) : 0;
+        clickArea.innerText = clickCount;
+        updateProgressBar(); // Обновляем прогресс-бар при загрузке
+    } else {
+        startScreen.style.display = 'flex';
+    }
+
+    submitName.addEventListener('click', () => {
+        const name = nameInput.value.trim();
+        if (name) {
+            localStorage.setItem('userName', name);
+            startScreen.style.display = 'none';
+            mainScreen.style.display = 'flex';
+        }
+    });
+
+    clickArea.addEventListener('mousedown', (e) => {
+        isClicking = true; // Начинаем кликать
+        clickCount++;
+        clickArea.innerText = clickCount;
+        localStorage.setItem('clicks', clickCount);
+        updateProgressBar();
+
+        // Создание анимации
+        const plusOne = document.createElement('div');
+        plusOne.className = 'animation';
+        plusOne.innerText = '+1';
+        plusOne.style.left = e.clientX + 'px'; // Исправлено: Используйте + для конкатенации
+        plusOne.style.top = e.clientY + 'px'; // Исправлено: Используйте + для конкатенации
+        document.body.appendChild(plusOne);
+
+        // Анимация
+        setTimeout(() => {
+            plusOne.style.transform = 'translateY(-50px)';
+            plusOne.style.opacity = '0';
+        }, 10);
+        setTimeout(() => {
+            plusOne.remove();
+        }, 500);
+    });
+
+    clickArea.addEventListener('mouseup', () => {
+        isClicking = false; // Прекращаем кликать
+    });
+
+    clickArea.addEventListener('click', (e) => { // Слушатель на клик остается
+        if (!isClicking) {
+            clickCount++;
+            clickArea.innerText = clickCount;
+            localStorage.setItem('clicks', clickCount);
+            updateProgressBar();
+
+            // Создание анимации
+            const plusOne = document.createElement('div');
+            plusOne.className = 'animation';
+            plusOne.innerText = '+1';
+            plusOne.style.left = e.clientX + 'px'; // Исправлено: Используйте + для конкатенации
+            plusOne.style.top = e.clientY + 'px'; // Исправлено: Используйте + для конкатенации
+            document.body.appendChild(plusOne);
+
+            // Анимация
+            setTimeout(() => {
+                plusOne.style.transform = 'translateY(-50px)';
+                plusOne.style.opacity = '0';
+            }, 10);
+            setTimeout(() => {
+                plusOne.remove();
+            }, 500);
+        }
+    });
+
+    function updateProgressBar() {
+        let progressPercentage = (clickCount % 100) / 100 * 100; // Изменение: вычисляем процент от остатка от деления на 100
+        progressBarFill.style.width = progressPercentage + "%";
+        progressBarText.textContent = progressPercentage + "%";
+        if (progressPercentage >= 100) {
+            progressBarFill.style.width = "0%";
+            progressBarText.textContent = "0%";
+        }
+    }
+</script>
+
+</body>
+</html>
