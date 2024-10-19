@@ -110,9 +110,17 @@
         <div class="progressBarText">0%</div>
     </div>
 </div>
+<audio id="pocikAudo">
+    <source src="https://assets.mixkit.co/active_storage/sfx/275/275-preview.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-    
+    var pocik = document.getElementById('clickArea'),
+      pocikAudio = document.getElementById('pocikAudo');
+      pocik.addEventListener('click', fPlay, false);
+    function fPlay() {
+      pocikAudio.play();
+    }
     const startScreen = document.getElementById('startScreen');
     const mainScreen = document.getElementById('mainScreen');
     const nameInput = document.getElementById('nameInput');
