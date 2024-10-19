@@ -68,7 +68,7 @@
         }
         #clickArea:hover {
             background-color: #004288;
-            box-shadow: 0 0 20px rgb(117, 126, 255);
+            box-shadow: 0 0 20px rgb(41, 55, 255);
         }
         .animation {
             position: absolute;
@@ -102,21 +102,24 @@
     <input type="text" id="nameInput" placeholder="Введите ваше имя">
     <button id="submitName">Начать</button>
 </div>
+<audio id="myAudio" preload="auto">
+    <source src="https://alexbruni.ru/afx/sound_file/schelkane-dlya-ui-38.mp3"  type="audio/mpeg">
+</audio>
 
-<div id="mainScreen" class="noselect">
-    <div id="clickArea" class="noselect" onclick="playMusic()">0</div>
+<div id="mainScreen" class="noselect"  onclick="playSound()">
+    <div id="clickArea" class="noselect" onclick="playSound()">0</div>
     <div class="progressBar">
         <div class="progressBarFill"></div>
         <div class="progressBarText">0%</div>
     </div>
 </div>
-<audio id="myAudio">
-    <source src="https://alexbruni.ru/afx/sound_file/schelkane-dlya-ui-38.mp3" type="audio/mpeg">
-  </audio>
 <script>
     function playSound() {
       var audio = document.getElementById("myAudio");
-      audio.play();
+      audio.load(); // Предварительная загрузка аудио
+      audio.play().catch(function(error) {
+        console.log("Ошибка воспроизведения: " + error);
+      });
     }
     const startScreen = document.getElementById('startScreen');
     const mainScreen = document.getElementById('mainScreen');
