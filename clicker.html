@@ -119,14 +119,50 @@
 let count = 0;
 const audio = document.getElementById('myAudio');
 const clickArea = document.getElementById('clickArea');
+const nameInput = document.getElementById('nameInput');
+const submitNameButton = document.getElementById('submitName');
+
+// Проверка имени в localStorage при загрузке страницы
+window.onload = () => {
+    const username = localStorage.getItem('userName');
+    if (username) {
+        loadClicks(username);
+        document.getElementById('startScreen').style.display = 'none';
+        clickArea.style.display = 'block';
+        document.querySelector('.progressBar').style.display = 'block'; 
+    }
+};
+
+submitNameButton.addEventListener('click', () => {
+    const username = nameInput.value.trim();
+    if (username) {
+        localStorage.setItem('userName', username); // Сохраняем имя пользователя
+        loadClicks(username);
+        document.getElementById('startScreen').style.display = 'none';
+        clickArea.style.display = 'block';
+        document.querySelector('.progressBar').style.display = 'block'; 
+    } else {
+        alert('Пожалуйста, введите ваше имя!');
+    }
+});
+
+function loadClicks(username) {
+    const savedClicks = localStorage.getItem(username);
+    count = savedClicks ? parseInt(savedClicks) : 0;
+    updateDisplay();
+}
+
+function saveClicks(username) {
+    localStorage.setItem(username, count); // Сохраняем клики по имени
+}
 
 function incrementAndPlaySound() {
     count += 1;
     updateDisplay();
     audio.currentTime = 0; 
-    audio.play().catch(error => {
-        console.error("Ошибка воспроизведения:", error);
-    });
+    audio.play().catch(error => console.error("Ошибка воспроизведения:", error));
+    const username = localStorage.getItem('userName'); // Получаем имя пользователя
+    saveClicks(username); // Сохраняем клики
 }
 
 function updateDisplay() {
@@ -150,7 +186,6 @@ function createAnimation(x, y) {
     plusOne.style.top = y + 'px';
     document.body.appendChild(plusOne);
 
-    // Анимация
     setTimeout(() => {
         plusOne.style.transform = 'translateY(-50px)';
         plusOne.style.opacity = '0';
@@ -160,17 +195,6 @@ function createAnimation(x, y) {
     }, 500);
 }
 
-
-
-    function updateProgressBar() {
-        let progressPercentage = (clickCount % 100) / 100 * 100; // Изменение: вычисляем процент от остатка от деления на 100
-        progressBarFill.style.width = progressPercentage + "%";
-        progressBarText.textContent = progressPercentage + "%";
-        if (progressPercentage >= 100) {
-            progressBarFill.style.width = "0%";
-            progressBarText.textContent = "0%";
-        }
-    }
 </script>
 
 </body>
