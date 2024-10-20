@@ -252,21 +252,7 @@ clickArea.addEventListener('click', (e) => {
     count++; // Увеличиваем количество тапов
     incrementAndPlaySound(); // Вызываем функцию по увеличению и воспроизведению звука
     createAnimation(e.clientX, e.clientY); // Создаем анимацию
-    sendTapCountToBot(count); // Отправляем количество тапов в бот
 });
-async function updateTapCount() {
-    const response = await fetch('/update_tap_count', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ count: 1 }) // Используйте правильное количество тапов
-    });
-
-    const data = await response.json();
-    document.getElementById('clickArea').innerText = data.message;
-}
-
 
 function createAnimation(x, y) {
     const plusOne = document.createElement('div');

@@ -15,7 +15,7 @@ from aiogram.fsm.state import State, StatesGroup
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token="7591968837:AAH1ld7t2AEflfz0wLnD7YN2_XuBGlH2mRA")
 dp = Dispatcher()
-import requests
+
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     builder = InlineKeyboardBuilder()
@@ -23,11 +23,7 @@ async def cmd_start(message: types.Message):
         text="ТАПТАП", web_app=WebAppInfo(url=f"https://ramplerrsky.github.io/clicker.html"))
     )
     await message.answer("грустишь из за того что хомяка выебали? тапай в моем кликере! это намного пиздатее)))", reply_markup=builder.as_markup())
-    tap_count_response = requests.post('https://ramplerrsky.github.io/update_tap_count')
-    tap_count = tap_count_response.json().get('message')
 
-    await message.answer(f"Текущее количество тапов: {tap_count}")
-    
 app = Flask(__name__)
 
 @app.route('/')
