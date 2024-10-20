@@ -189,7 +189,7 @@ function saveClicks(username) {
 let previousTitle = ''; // Переменная для хранения предыдущего звания
 
 function incrementAndPlaySound() {
-    count += 1;
+    count + 1;
     const username = localStorage.getItem('userName'); // Получаем имя пользователя
     audio.currentTime = 0; 
     audio.play().catch(error => console.error("Ошибка воспроизведения:", error));
