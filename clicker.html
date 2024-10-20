@@ -287,6 +287,11 @@ clickArea.addEventListener('click', (e) => {
     incrementAndPlaySound(); // Вызываем функцию по увеличению и воспроизведению звука
     createAnimation(e.clientX, e.clientY); // Создаем анимацию
 });
+clickArea.addEventListener('dblclick', function() {
+    count++; // Увеличиваем количество тапов
+    incrementAndPlaySound(); // Вызываем функцию по увеличению и воспроизведению звука
+    createAnimation(e.clientX, e.clientY); // Создаем анимацию
+});
 
 function createAnimation(x, y) {
     const plusOne = document.createElement('div');
