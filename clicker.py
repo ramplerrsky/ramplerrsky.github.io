@@ -20,9 +20,9 @@ dp = Dispatcher()
 async def cmd_start(message: types.Message):
     builder = InlineKeyboardBuilder()
     builder.row(types.InlineKeyboardButton(
-        text="⚙️ ТАПТАП", web_app=WebAppInfo(url=f"https://ramplerrsky.github.io/clicker.html"))
+        text="ТАПТАП", web_app=WebAppInfo(url=f"https://ramplerrsky.github.io/clicker.html"))
     )
-    await message.answer("ТАПАЙ ЕСС", reply_markup=builder.as_markup())
+    await message.answer("грустишь из за того что хомяка выебали? тапай в моем кликере! это намного пиздатее)))", reply_markup=builder.as_markup())
 
 app = Flask(__name__)
 
@@ -32,6 +32,16 @@ def index():
     hostname = socket.gethostname()
     local_ip = socket.gethostbyname(hostname)
     return render_template('clicker.html', ip_address=local_ip)
+
+import requests
+
+async def cmd_tap(message: types.Message):
+    tap_count_response = requests.post('https://ramplerrsky.github.io/update_tap_count')
+    tap_count = tap_count_response.json().get('message')
+
+    await message.answer(f"Текущее количество тапов: {tap_count}")
+
+
 
 async def main():
     # Запускаем обработку сообщений Telegram
