@@ -6,13 +6,15 @@
     <title>Кликер</title>
 </head>
 <body>
-
+ 
     <div id="startScreen" class="noselect">
         <input type="text" id="nameInput" placeholder="Введите ваше имя">
         <button id="submitName">Начать</button>
     </div>
+    <div id="titleDisplay" class="noselect">Новичок</div>
+    <h1 id="nameGame">RampleClicker</h1>
     <audio id="myAudio" preload="auto">
-        <source src="https://alexbruni.ru/afx/sound_file/schelkane-dlya-ui-38.mp3" type="audio/mpeg">
+        <source src="https://assets.mixkit.co/active_storage/sfx/1109/1109-preview.mp3" type="audio/mpeg">
     </audio>
     <div id="clickArea" class="noselect">
         0
@@ -21,6 +23,7 @@
         <div class="progressBarFill" id="progressFill"></div>
         <div class="progressBarText" id="progressText">0%</div>
     </div>
+    
 <style>
             .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
@@ -31,7 +34,14 @@
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+        #nameGame{
+            filter: drop-shadow(0 0 40px #555);
+            position: relative;
+            bottom:100px;
+            font-family: "MultiRound Pro";
+        }
         body {
+            filter: drop-shadow(0 0 40px #555);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -56,6 +66,11 @@
             flex-direction: column;
             width: 100%;
         }
+        #titleDisplay{
+            position: relative;
+            bottom: 20px;
+            font-family: "MultiRound Pro";
+        }
         #nameInput {
             padding: 15px 30px;
             font-size: 24px;
@@ -71,6 +86,7 @@
     pointer-events: none; /* Чтобы не мешало кликам */
     transition: transform 0.5s ease, opacity 0.5s ease;
     position: absolute;
+    font-family: "MultiRound Pro";
 }
 
         #clickArea {
@@ -87,13 +103,17 @@
             text-align: center;
             line-height: 200px;
             user-select: none;
-            transition: background-color 0.3s;
+            transition: 0.3s;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent; /* Убираем синюю зону в Chrome и Safari */
+            font-family: "MultiRound Pro";
         }
         #clickArea:hover {
-            background-color: #004288;
-            box-shadow: 0 0 20px rgb(41, 55, 255);
+            background-color: #278fff;
+            box-shadow: 0 0 20px rgb(86, 97, 255);
+        }
+        #clickArea:active {
+          transform: scale(1.1);
         }
         .progressBar {
             width: 100%;
@@ -146,10 +166,11 @@ submitNameButton.addEventListener('click', () => {
     }
 });
 
-function loadClicks(username) {
-    const savedClicks = localStorage.getItem(username);
-    count = savedClicks ? parseInt(savedClicks) : 0;
-    updateDisplay();
+function loadClicks() {
+    const username = localStorage.getItem('userName'); // Получаем имя пользователя
+    const savedClicks = localStorage.getItem(username); // Загружаем количество кликов по имени
+    count = savedClicks ? parseInt(savedClicks) : 0; // Если есть сохраненные клики, загружаем их
+    updateDisplay(); // Обновляем отображение
 }
 
 function saveClicks(username) {
@@ -161,24 +182,48 @@ function incrementAndPlaySound() {
     const username = localStorage.getItem('userName'); // Получаем имя пользователя
     audio.currentTime = 0; 
     audio.play().catch(error => console.error("Ошибка воспроизведения:", error));
-    
     saveClicks(username); // Сохраняем клики
     updateDisplay(); // Обновляем отображение
 }
 
 function updateDisplay() {
     clickArea.textContent = count;
-    
-    // Проверяем, достиг ли count 100
-    if (count % 100 === 0) {
-        document.getElementById('progressFill').style.width = '0%'; // Сбрасываем прогресс-бар
-        document.getElementById('progressText').textContent = '0%'; // Сбрасываем текст прогресса
+    let title = '';
+    let nextLevelThreshold;
+
+    // Определение текущего звания и порога для следующего уровня
+    if (count < 100) {
+        title = 'Вы Новичок';
+        nextLevelThreshold = 100;
+    } else if (count < 500) {
+        title = 'Вы Хороший игрок';
+        nextLevelThreshold = 500;
+    } else if (count < 1000) {
+        title = 'Вы Опытный игрок';
+        nextLevelThreshold = 1000;
+    } else if (count < 1500) {
+        title = 'Вы Мастер';
+        nextLevelThreshold = 1500;
     } else {
-        const progressValue = count % 100; // Берем остаток от деления на 100
-        document.getElementById('progressFill').style.width = progressValue + '%';
-        document.getElementById('progressText').textContent = progressValue + '%';
+        title = 'Вы Миллиардер';
+        nextLevelThreshold = Math.floor(count / 100) * 100 + 100; // Каждые 100 снизу
     }
+
+    // Вычисляем заполняемость прогресс-бара
+    const progressValue = Math.min((count / nextLevelThreshold) * 100, 100); // Процентное соотношение
+
+    // Обновляем прогресс-бар
+    document.getElementById('progressFill').style.width = progressValue + '%';
+    document.getElementById('progressText').textContent = Math.floor(progressValue) + '%';
+    
+    // Отображаем звание
+    document.getElementById('titleDisplay').textContent = title;
 }
+
+// Вызываем loadClicks при загрузке страницы
+window.onload = function() {
+    loadClicks();
+};
 
 
 
