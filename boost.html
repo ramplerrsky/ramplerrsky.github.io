@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бустеры</title>
+    <style>
+        #clickArea {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #007bff;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+            transition: 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+<div id="clickArea">+1</div>
+<div id="score">Счет: 0</div>
+<div id="boostButton" style="margin-top: 20px; display: none;">
+    <button id="buyBoost">Купить Бустер (500 кликов)</button>
+</div>
+
+<script>
+    const clickArea = document.getElementById('clickArea');
+    const scoreDisplay = document.getElementById('score');
+    const boostButton = document.getElementById('boostButton');
+    const buyBoost = document.getElementById('buyBoost');
+    
+    let score = 0;
+
+    clickArea.addEventListener('click', async () => {
+        score++;
+        scoreDisplay.textContent = Счет: ${score};
+
+        // Отправка данных на сервер
+        await fetch('/increment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ score }),
+        });
+
+        // Проверка, можно ли купить бустер
+        if (score >= 500) {
+            boostButton.style.display = 'block';
+        }
+    });
+
+    buyBoost.addEventListener('click', async () => {
+        if (score >= 500) {
+            score -= 500; // Уменьшаем счет на 500
+            scoreDisplay.textContent = Счет: ${score};
+            
+            // Отправка данных на сервер для обновления счета
+            await fetch('/buyBoost', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ score }),
+            });
+
+            // Скрыть кнопку после покупки
+            boostButton.style.display = 'none';
+        } else {
+            alert("Недостаточно кликов для покупки бустера!");
+        }
+    });
+</script>
+
+</body>
+</html>
