@@ -16,6 +16,9 @@
     <audio id="myAudio" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/1109/1109-preview.mp3" type="audio/mpeg">
     </audio>
+    <audio id="myAudio2" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2575/2575-preview.mp3" type="audio/mpeg">
+    </audio>
     <div id="clickArea" class="noselect">
         0
     </div>
@@ -115,6 +118,10 @@
         #clickArea:active {
           transform: scale(1.1);
         }
+        @font-face {
+	font-family: 'Multiround Pro'; 
+	src: url("/Multiround Pro.otf");
+}
         .progressBar {
             width: 100%;
             height: 10px;
@@ -136,11 +143,13 @@
 </style>
 
 <script>
+
 let count = 0;
 const audio = document.getElementById('myAudio');
 const clickArea = document.getElementById('clickArea');
 const nameInput = document.getElementById('nameInput');
 const submitNameButton = document.getElementById('submitName');
+const audio2 = document.getElementById('myAudio2');
 
 // Проверка имени в localStorage при загрузке страницы
 window.onload = () => {
@@ -177,6 +186,8 @@ function saveClicks(username) {
     localStorage.setItem(username, count); // Сохраняем клики по имени
 }
 
+let previousTitle = ''; // Переменная для хранения предыдущего звания
+
 function incrementAndPlaySound() {
     count += 1;
     const username = localStorage.getItem('userName'); // Получаем имя пользователя
@@ -195,6 +206,7 @@ function updateDisplay() {
     if (count < 100) {
         title = 'Вы Новичок';
         nextLevelThreshold = 100;
+        
     } else if (count < 500) {
         title = 'Вы Хороший игрок';
         nextLevelThreshold = 500;
@@ -207,6 +219,14 @@ function updateDisplay() {
     } else {
         title = 'Вы Миллиардер';
         nextLevelThreshold = Math.floor(count / 100) * 100 + 100; // Каждые 100 снизу
+    }
+
+    // Проверяем, изменилось ли звание
+    if (title !== previousTitle) {
+        // Если звание изменилось, воспроизводим звук
+        audio2.currentTime = 0; 
+        audio2.play().catch(error => console.error("Ошибка воспроизведения:", error));
+        previousTitle = title; // Обновляем предыдущее звание
     }
 
     // Вычисляем заполняемость прогресс-бара
