@@ -582,258 +582,106 @@
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
-    // Particles.js
-    particlesJS('particles-js', {
-        particles: {
-            number: {
-                value: 100,
-                density: {
-                    enable: true,
-                    value_area: 800
-                }
-            },
-            color: {
-                value: '#fff'
-            },
-            shape: {
-                type: 'circle',
-                stroke: {
-                    width: 0,
-                    color: '#000000'
-                },
-                polygon: {
-                    nb_sides: 5
-                }
-            },
-            opacity: {
-                value: 0.5,
-                random: false,
-                anim: {
-                    enable: false,
-                    speed: 1,
-                    opacity_min: 0.1,
-                    sync: false
-                }
-            },
-            size: {
-                value: 3,
-                random: true,
-                anim: {
-                    enable: false,
-                    speed: 40,
-                    size_min: 0.1,
-                    sync: false
-                }
-            },
-            line_linked: {
-                enable: true,
-                distance: 150,
-                color: '#fff',
-                opacity: 0.4,
-                width: 1
-            },
-            move: {
-                enable: true,
-                speed: 3,
-                direction: 'none',
-                random: false,
-                straight: false,
-                out_mode: 'out',
-                bounce: false,
-                attract: {
-                    enable: false,
-                    rotateX: 600,
-                    rotateY: 1200
-                }
-            }
-        },
-        interactivity: {
-            detect_on: 'canvas',
-            events: {
-                onhover: {
-                    enable: true,
-                    mode: 'grab'
-                },
-                onclick: {
-                    enable: true,
-                    mode: 'push'
-                },
-                resize: true
-            },
-            modes: {
-                grab: {
-                    distance: 200,
-                    line_linked: {
-                        opacity: 1
-                    }
-                },
-                push: {
-                    particles_nb: 4
-                }
-            }
-        },
-        retina_detect: true
-    });
-
-    // Получение элементов
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-    const tableBody = document.querySelector('.table-body');
-    const modal = document.getElementById('modal');
-    const closeModalBtn = document.querySelector('.close');
-    const modalBackBtn = document.querySelector('.modal-back-btn');
-    const articleModal = document.getElementById('articleModal');
-    const articleCloseBtn = articleModal.querySelector('.close');
-    const articleBtn = document.getElementById('articleBtn'); // Get the article button using its ID
-
-
-    // Табы
-    tabBtns.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabBtns.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-
-            tab.classList.add('active');
-            const tabId = tab.dataset.tab;
-            document.getElementById(tabId).classList.add('active');
-        })
-    })
-
-
-    // Данные для номеров
-    const countryData = {
-        countries: [
-            {
-                flag: 'https://flagcdn.com/w40/ru.png',
-                country: 'Россия',
-                stock: 120,
-                price: '150 ₽',
-                benefits: ["Для активации Telegram", "Стабильная работа", "Мгновенная выдача"]
-            },
-            {
-                flag: 'https://flagcdn.com/w40/us.png',
-                country: 'США',
-                stock: 70,
-                price: '150 ₽',
-                benefits: ["Для активации Telegram", "Анонимность", "Быстрая доставка"]
-            },
-            {
-                flag: 'https://flagcdn.com/w40/ua.png',
-                country: 'Украина',
-                stock: 100,
-                price: '150 ₽',
-                benefits: ["Для регистрации в Telegram", "Надежный сервис", "Удобная покупка"]
-            },
-            {
-                flag: 'https://flagcdn.com/w40/kz.png',
-                country: 'Казахстан',
-                stock: 80,
-                price: '150 ₽',
-                benefits: ["Для аккаунта Telegram", "Выгодные цены", "Постоянная поддержка"]
-            },
-            {
-                flag: 'https://flagcdn.com/w40/by.png',
-                country: 'Беларусь',
-                stock: 60,
-                price: '150 ₽',
-                benefits: ["Для Telegram-активации", "Без ограничений", "Гарантия работоспособности"]
-            },
-            {
-                flag: 'https://flagcdn.com/w40/de.png',
-                country: 'Германия',
-                stock: 90,
-                price: '150 ₽',
-                benefits: ["Для Telegram", "Высокое качество", "Подходит для любых целей"]
-            },
-            {
-                flag: 'https://flagcdn.com/w40/gb.png',
-                country: 'Великобритания',
-                stock: 60,
-                price: '150 ₽',
-                benefits: ["Для Telegram", "Надежный сервис", "Моментальная выдача"]
-            },
-            {
-                flag: 'https://flagcdn.com/w40/fr.png',
-                country: 'Франция',
-                stock: 120,
-                price: '150 ₽',
-                benefits: ["Для Telegram", "Высокое качество", "Быстрая доставка"]
-            },
-            {
-                flag: 'https://flagcdn.com/w40/es.png',
-                country: 'Испания',
-                stock: 80,
-                price: '150 ₽',
-                benefits: ["Для Telegram", "Выгодные цены", "Постоянная поддержка"]
-            }
-        ]
-    };
-    // Отображение данных в таблице
-    function renderTable() {
-        tableBody.innerHTML = ''; // Очищаем таблицу перед рендерингом
-        countryData.countries.forEach((item, index) => {
-            const row = document.createElement('div');
-            row.classList.add('table-row');
-
-            row.innerHTML = `
-                <div><img src="${item.flag}" alt="${item.country} Flag"></div>
-                <div>${item.country}</div>
-                <div>${item.stock}</div>
-                <div>${item.price}</div>
-            `;
-            row.addEventListener('click', () => openModal(index));
-            tableBody.appendChild(row);
+    // Ensure the table renders, and all buttons are clickable and functional
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const tableBody = document.querySelector('.table-body');
+        const modal = document.getElementById('modal');
+        const closeModalBtn = document.querySelector('.close');
+        const modalBackBtn = document.querySelector('.modal-back-btn');
+        const articleModal = document.getElementById('articleModal');
+        const articleCloseBtn = articleModal.querySelector('.close');
+        const articleBtn = document.getElementById('articleBtn'); 
+    
+        // Ensure Tab switching works
+        tabBtns.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabBtns.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                tab.classList.add('active');
+                const tabId = tab.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+            });
         });
-    }
-    renderTable(); // Вызываем рендер при загрузке страницы
-
-    // Модальное окно
-    function openModal(index) {
-        const country = countryData.countries[index];
-
-        document.querySelector('.country-flag-modal').src = country.flag;
-        document.querySelector('.country-name-modal').textContent = country.country;
-        document.querySelector('.stock-modal').textContent = country.stock;
-        document.querySelector('.price-modal').textContent = country.price;
-
-        const benefitsList = document.querySelector('.benefits-list');
-        benefitsList.innerHTML = '';
-        country.benefits.forEach(benefit => {
-            const li = document.createElement('li');
-            li.textContent = benefit;
-            benefitsList.appendChild(li);
-        })
-
-        modal.classList.add('active');
-    }
-
-    closeModalBtn.addEventListener('click', () => {
-        modal.classList.remove('active');
-    });
-
-    modalBackBtn.addEventListener('click', () => {
-        modal.classList.remove('active');
-    })
-
-    // Статья
-    articleBtn.addEventListener('click', () => {
-        articleModal.classList.add('active');
-    });
-    articleCloseBtn.addEventListener('click', () => {
-        articleModal.classList.remove('active');
-    });
-
-    // Закрытие модального окна при клике вне его
-    window.addEventListener('click', (e) => {
-        if(e.target === modal){
+    
+        // Table Data Rendering
+        const countryData = {
+            countries: [
+                { flag: 'https://flagcdn.com/w40/ru.png', country: 'Россия', stock: 120, price: '150 ₽', benefits: ["Для активации Telegram", "Стабильная работа", "Мгновенная выдача"] },
+                { flag: 'https://flagcdn.com/w40/us.png', country: 'США', stock: 70, price: '150 ₽', benefits: ["Для активации Telegram", "Анонимность", "Быстрая доставка"] },
+                { flag: 'https://flagcdn.com/w40/ua.png', country: 'Украина', stock: 100, price: '150 ₽', benefits: ["Для регистрации в Telegram", "Надежный сервис", "Удобная покупка"] },
+                { flag: 'https://flagcdn.com/w40/kz.png', country: 'Казахстан', stock: 80, price: '150 ₽', benefits: ["Для аккаунта Telegram", "Выгодные цены", "Постоянная поддержка"] },
+                { flag: 'https://flagcdn.com/w40/by.png', country: 'Беларусь', stock: 60, price: '150 ₽', benefits: ["Для Telegram-активации", "Без ограничений", "Гарантия работоспособности"] },
+                { flag: 'https://flagcdn.com/w40/de.png', country: 'Германия', stock: 90, price: '150 ₽', benefits: ["Для Telegram", "Высокое качество", "Подходит для любых целей"] },
+                { flag: 'https://flagcdn.com/w40/gb.png', country: 'Великобритания', stock: 60, price: '150 ₽', benefits: ["Для Telegram", "Надежный сервис", "Моментальная выдача"] },
+                { flag: 'https://flagcdn.com/w40/fr.png', country: 'Франция', stock: 120, price: '150 ₽', benefits: ["Для Telegram", "Высокое качество", "Быстрая доставка"] },
+                { flag: 'https://flagcdn.com/w40/es.png', country: 'Испания', stock: 80, price: '150 ₽', benefits: ["Для Telegram", "Выгодные цены", "Постоянная поддержка"] }
+            ]
+        };
+    
+        function renderTable() {
+            tableBody.innerHTML = ''; 
+            countryData.countries.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.classList.add('table-row');
+                row.innerHTML = `
+                    <div><img src="${item.flag}" alt="${item.country} Flag"></div>
+                    <div>${item.country}</div>
+                    <div>${item.stock}</div>
+                    <div>${item.price}</div>
+                `;
+                row.addEventListener('click', () => openModal(index));
+                tableBody.appendChild(row);
+            });
+        }
+        renderTable();
+    
+        // Modal functionality
+        function openModal(index) {
+            const country = countryData.countries[index];
+            document.querySelector('.country-flag-modal').src = country.flag;
+            document.querySelector('.country-name-modal').textContent = country.country;
+            document.querySelector('.stock-modal').textContent = country.stock;
+            document.querySelector('.price-modal').textContent = country.price;
+            const benefitsList = document.querySelector('.benefits-list');
+            benefitsList.innerHTML = '';
+            country.benefits.forEach(benefit => {
+                const li = document.createElement('li');
+                li.textContent = benefit;
+                benefitsList.appendChild(li);
+            });
+    
+            modal.classList.add('active');
+        }
+    
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
             modal.classList.remove('active');
-        }
-        if(e.target === articleModal){
-            articleModal.classList.remove('active')
-        }
-    })
-
-</script>
+        });
+        modalBackBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+    
+        // Article modal functionality
+        articleBtn.addEventListener('click', () => {
+            articleModal.classList.add('active');
+        });
+        articleCloseBtn.addEventListener('click', () => {
+            articleModal.classList.remove('active');
+        });
+    
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if(e.target === modal || e.target === articleModal){
+                modal.classList.remove('active');
+                articleModal.classList.remove('active');
+            }
+        });
+    });
+    </script>
+    
 <style>
     header {
       background-color: #000000; /* Темно-черный цвет */
@@ -880,9 +728,11 @@
         }
 
         .tab-btn {
-            font-size: 0.9em;
-            padding: 8px;
-        }
+        font-size: 1em; /* Увеличиваем размер шрифта */
+        padding: 10px;  /* Увеличиваем padding для удобства клика */
+        z-index: 10;    /* Убедимся, что кнопки всегда поверх других элементов */ 
+        padding-right: 5px;
+    }
 
         .table-container {
             margin-top: 40px;
