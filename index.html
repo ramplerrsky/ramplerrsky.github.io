@@ -859,7 +859,7 @@
     }
 
     /* Плавная адаптация для мобильных устройств */
-    @media (max-width: 768px) {
+    @media (max-width: 758px) {
         .logo {
             font-size: 1.5em;
         }
@@ -872,6 +872,8 @@
             display: flex;
             flex-direction: row;
             justify-content: space-around;
+            position: relative;
+            left: 100px;
         }
 
         .tab-btn {
@@ -880,13 +882,16 @@
         }
 
         .table-container {
-            margin-top: 20px;
+            margin-top: 40px;
+            margin-right: 150px;
+            
         }
 
         .table-row {
             display: block;
-            padding: 15px;
+            padding: 100px;
             margin-bottom: 10px;
+            
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -895,12 +900,18 @@
         }
 
         .content {
-            padding: 10px;
+            padding: 50px;
+            position: relative;
+            right: 170px;
         }
 
         .modal-content {
-            width: 80%;
+            width: 100%;
+            width: 300px;
             margin: 10% auto;
+            position: relative;
+            right: 150px;
+            bottom:150px;
         }
 
         .article-modal-content {
