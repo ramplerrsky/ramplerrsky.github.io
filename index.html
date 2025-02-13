@@ -292,8 +292,8 @@
         confirmDepositButton.addEventListener('click', () => {
             let depositAmount = parseInt(depositAmountInput.value);
 
-            if (isNaN(depositAmount) || depositAmount < 0 || depositAmount > 5000) {
-                showNotification("Введите корректную сумму пополнения от 0 до 5000.");
+            if (isNaN(depositAmount) || depositAmount < 0 || depositAmount > 1000000) {
+                showNotification("Введите корректную сумму пополнения от 0 до 1000000.");
                 return;
             }
 
