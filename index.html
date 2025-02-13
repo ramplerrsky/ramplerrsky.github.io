@@ -157,6 +157,8 @@
     <!-- Звуки для победы и поражения -->
     <audio id="winSound" src="win.mp3"></audio>
     <audio id="loseSound" src="lose.mp3"></audio>
+    <!-- Звук вращения рулетки -->
+    <audio id="spinSound" src="spin.mp3" loop></audio>
 
     <script>
         const spinButton = document.getElementById('spinButton');
@@ -167,6 +169,7 @@
         const winSound = document.getElementById('winSound');
         const loseSound = document.getElementById('loseSound');
         const balanceSpan = document.getElementById('balance');
+        const spinSound = document.getElementById('spinSound'); // Добавляем звук вращения
         let balance = 1000;
 
         // Скрываем окно ввода при нажатии на кнопку
@@ -206,6 +209,10 @@
             roulette.style.transition = 'transform 6s ease-out';
             roulette.style.transform = `rotate(${degrees}deg)`;
 
+            // Запускаем звук вращения
+            spinSound.currentTime = 0; // Сбрасываем время воспроизведения
+            spinSound.play();
+
             setTimeout(() => {
                 let finalRotation = degrees % 360; // Угол, на котором остановилась рулетка
                 let win = finalRotation >= (360 - winAngle);
@@ -218,6 +225,10 @@
                 updateBalance(); // Обновляем баланс на странице
 
                 showNotification(resultText + (win ? ` Вы выиграли ${payout.toFixed(2)} UP!` : ""));
+
+                // Останавливаем звук вращения
+                spinSound.pause();
+                spinSound.currentTime = 0; // Сбрасываем время воспроизведения
 
                 // Воспроизводим звук в зависимости от результата
                 if (win) {
