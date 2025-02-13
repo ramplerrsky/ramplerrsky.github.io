@@ -54,6 +54,7 @@
             border-radius: 12px;
             border: none;
             font-size: 18px;
+            
         }
         button {
             background: #ff9800;
@@ -69,7 +70,7 @@
         /* Стили для уведомления */
         .notification {
             position: fixed;
-            top: 50%;
+            top: 30%;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.8);
@@ -84,6 +85,7 @@
             pointer-events: none;
             border: 2px solid white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            
         }
 
         .notification.show {
@@ -93,32 +95,27 @@
         /* Окно ввода шанса */
         .chance-input-container {
             position: absolute;
-            top: 50px; /* Начальная позиция, немного выше кнопки */
+            top: 60px; /* Начальная позиция, немного выше кнопки */
             left: 50%;
+            
             transform: translateX(-50%);
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
             padding: 10px;
+            width: 250px;
             border-radius: 12px;
-            display: none;
+            display: flex; /* Изменено с none на flex для видимости */
             flex-direction: column;
             align-items: center;
             border: 2px solid white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transition: opacity 0.3s ease, top 0.3s ease;
-        }
-
-        /* Когда окно ввода становится видимым */
-        .chance-input-container.show {
-            display: flex;
-            opacity: 1;
-            top: 80px; /* Позиция под кнопкой */
+            max-width: 600px; /* Максимальная ширина 600 пикселей */
         }
 
          /* Окно ввода ставки */
         .bet-input-container {
             position: absolute;
+            max-width: 600px; /* Максимальная ширина 600 пикселей */
             top: 160px; /* Начальная позиция, немного выше кнопки */
             left: 50%;
             transform: translateX(-50%);
@@ -126,20 +123,11 @@
             color: white;
             padding: 10px;
             border-radius: 12px;
-            display: none;
+            display: flex; /* Изменено с none на flex для видимости */
             flex-direction: column;
             align-items: center;
             border: 2px solid white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transition: opacity 0.3s ease, top 0.3s ease;
-        }
-
-        /* Когда окно ввода становится видимым */
-        .bet-input-container.show {
-            display: flex;
-            opacity: 1;
-            top: 190px; /* Позиция под кнопкой */
         }
 
         .balance {
@@ -157,7 +145,7 @@
     <div class="controls">
         <button id="spinButton">Крутить</button>
         <div class="chance-input-container" id="chanceInputContainer">
-            <input type="number" id="chance" placeholder="Введите шанс (0-100)" min="0" max="100">
+            <input type="number" id="chance" placeholder="Введите шанс (0-100)" min="0" max="100" style="width: 215px;">
         </div>
         <div class="bet-input-container" id="betInputContainer">
             <input type="number" id="bet" placeholder="Введите ставку" min="0">
@@ -180,12 +168,6 @@
         const loseSound = document.getElementById('loseSound');
         const balanceSpan = document.getElementById('balance');
         let balance = 1000;
-
-        // Показываем окно ввода при наведении
-        spinButton.addEventListener('mouseover', () => {
-            chanceInputContainer.classList.add('show');
-            betInputContainer.classList.add('show');
-        });
 
         // Скрываем окно ввода при нажатии на кнопку
         spinButton.addEventListener('click', () => {
@@ -214,8 +196,6 @@
 
             updateBalance(); // Обновляем баланс сразу после снятия ставки
             spinRoulette(chance, bet);
-            chanceInputContainer.classList.remove('show');
-            betInputContainer.classList.remove('show');
         });
 
         function spinRoulette(chance, bet) {
