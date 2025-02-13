@@ -3,797 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telesim - Виртуальные номера</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>Рулетка Шанса</title>
     <style>
-        /* Общие стили */
         body {
-            font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
-            margin: 0;
-            padding: 0;
-            background: #151515;
-            color: #fff;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: radial-gradient(circle, #333, #111);
+            color: white;
+            font-family: "Multiround Pro";
         }
-        #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .roulette-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            border: 5px solid #444;
+        }
+        .roulette {
             width: 100%;
             height: 100%;
-            z-index: 0;
-            opacity: 0.2;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 6s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
-
-        a{
-            color: #fff;
-            text-decoration: none;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.05);
+        .arrow {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid yellow;
             z-index: 10;
+        }
+        .controls {
+            margin-top: 20px;
+            text-align: center;
             position: relative;
         }
-
-        .logo {
-            font-size: 2em;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        input, button {
+            padding: 12px;
+            margin: 8px;
+            border-radius: 12px;
+            border: none;
+            font-size: 18px;
         }
-        .logo-tele{
-            color: #4091f8;
+        button {
+            background: #ff9800;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: "Multiround Pro";
+        }
+        button:hover {
+            background: #e68900;
         }
 
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        nav a {
+        /* Стили для уведомления */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            text-align: center;
             font-size: 24px;
-            color: #fff;
-            margin-right: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none;
+            border: 2px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
 
-        .site-name {
-            font-size: 1.2em;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        .notification.show {
+            opacity: 1;
         }
 
-        /* Кнопка "Пожертвовать аккаунт" */
-        .donate-btn,
-        .modal-buttons button,
-        .tab-btn,
-        .disabled-btn{
-            background: linear-gradient(to right, #667eea, #764ba2);
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
-
-        .donate-btn:hover,
-        .tab-btn:hover {
-            background: linear-gradient(to right, #764ba2, #667eea);
-            transform: scale(1.05);
-        }
-
-        main {
-            display: flex;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-            min-height: calc(100vh - 100px);
-        }
-
-        aside {
-            width: 150px;
-            margin-right: 20px;
-        }
-
-        .tabs {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tab-btn {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            font-size: 1em;
-            transition: background 0.3s ease;
-        }
-
-        .tab-btn:hover {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15));
-            font-weight: bold;
-        }
-
-        .content {
-            flex: 1;
-            padding: 20px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-
-        /* Стили для таблицы */
-        .table-container{
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .table-header{
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr 1fr;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .table-body{
-            padding: 10px;
-        }
-        .table-row{
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr 1fr;
-            padding: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .table-row:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .table-row img{
-            width: 40px;
-            height: 30px;
-            vertical-align: middle;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .th{
-            font-weight: bold;
-        }
-        .disabled-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            cursor: not-allowed;
-        }
-
-        /* Модальное окно */
-        .modal, .article-modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            align-items: center;
-            justify-content: center;
-        }
-        .modal.active, .article-modal.active{
-            display: flex;
-        }
-
-        .modal-content, .article-modal-content {
-            background-color: #1e1e1e;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
-            border-radius: 10px;
-            position: relative;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close {
+        /* Окно ввода шанса */
+        .chance-input-container {
             position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover{
-            color: #bbb;
-        }
-
-        .modal-country{
-            display: flex;
-            gap: 20px;
+            top: 50px; /* Начальная позиция, немного выше кнопки */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            display: none;
+            flex-direction: column;
             align-items: center;
+            border: 2px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease, top 0.3s ease;
+        }
+
+        /* Когда окно ввода становится видимым */
+        .chance-input-container.show {
+            display: flex;
+            opacity: 1;
+            top: 80px; /* Позиция под кнопкой */
+        }
+
+         /* Окно ввода ставки */
+        .bet-input-container {
+            position: absolute;
+            top: 160px; /* Начальная позиция, немного выше кнопки */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease, top 0.3s ease;
+        }
+
+        /* Когда окно ввода становится видимым */
+        .bet-input-container.show {
+            display: flex;
+            opacity: 1;
+            top: 190px; /* Позиция под кнопкой */
+        }
+
+        .balance {
+            font-size: 24px;
             margin-bottom: 20px;
         }
-        .modal{
-            transform: scale(1.05);
-        }
-
-        main {
-            display: flex;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-            min-height: calc(100vh - 100px);
-        }
-
-        aside {
-            width: 150px;
-            margin-right: 20px;
-        }
-
-        .tabs {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tab-btn {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            font-size: 1em;
-            transition: background 0.3s ease;
-        }
-
-        .tab-btn:hover {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15));
-            font-weight: bold;
-        }
-
-        .content {
-            flex: 1;
-            padding: 20px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-
-        /* Стили для таблицы */
-        .table-container{
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            right:10px;
-        }
-
-        .table-header{
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr 1fr;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .table-body{
-            padding: 10px;
-        }
-        .table-row{
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr 1fr;
-            padding: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .table-row:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .table-row img{
-            width: 40px;
-            height: 30px;
-            vertical-align: middle;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .th{
-            font-weight: bold;
-        }
-        .disabled-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            cursor: not-allowed;
-        }
-
-        /* Модальное окно */
-        .modal, .article-modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            align-items: center;
-            justify-content: center;
-        }
-        .modal.active, .article-modal.active{
-            display: flex;
-        }
-
-        .modal-content, .article-modal-content {
-            background-color: #1e1e1e;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
-            border-radius: 10px;
-            position: relative;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover{
-            color: #bbb;
-        }
-
-        .modal-country{
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .modal-country .country-flag-modal{
-        
-            width: 60px;
-            height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .benefits-list {
-            padding-left: 20px;
-            list-style-type: disc;
-        }
-        .modal-buttons{
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-            justify-content: flex-end;
-        }
-
-        .modal-buttons button{
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .modal-buy-btn{
-            background: linear-gradient(to right, #667eea, #764ba2);
-            border: none;
-            color: #fff;
-        }
-
-        .modal-buy-btn:hover{
-            background: linear-gradient(to right, #764ba2, #667eea);
-        }
-        .modal-back-btn{
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: #fff;
-        }
-
-        .rent-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .tab-content.active {
-            animation: fadeIn 0.3s ease;
-        }
-        .article-modal-content p{
-            line-height: 1.6;
-            font-size: 1.1em;
-        }
-        /* Общие стили для кнопок */
-.donate-btn,
-.modal-buttons button,
-.tab-btn,
-.disabled-btn {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  color: #fff;
-  padding: 10px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.donate-btn:hover,
-.tab-btn:hover {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
-  transform: scale(1.03);
-   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-}
-
-
-/* Специальные стили для кнопок купить и назад */
-.modal-buy-btn, .modal-back-btn {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-    color: #fff;
-    padding: 10px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.modal-buy-btn:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
-    transform: scale(1.03);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-}
-
-.modal-back-btn {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05));
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.modal-back-btn:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
-    transform: scale(1.03);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-}
-
     </style>
 </head>
 <body>
-<div id="particles-js"></div>
-<header>
-    <div class="logo">
-        <span class="logo-tele">Tele</span><span class="logo-sim">Sim</span>
+    <div class="balance">Баланс: <span id="balance">1000</span> UP</div>
+    <div class="roulette-container">
+        <div class="arrow"></div>
+        <div class="roulette" id="roulette"></div>
     </div>
-    <nav>
-        <a href="https://t.me/TeleSimOff" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-        <!--<a href="index2.html"><button class="donate-btn">Пожертвовать аккаунт</button></a>!-->
-    </nav>
-</header>
-
-<main>
-    <aside>
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="activations">Активации</button>
-            <button class="tab-btn" data-tab="rent">Аренда</button>
-          <button class="tab-btn" id="articleBtn">Статья</button>
+    <div class="controls">
+        <button id="spinButton">Крутить</button>
+        <div class="chance-input-container" id="chanceInputContainer">
+            <input type="number" id="chance" placeholder="Введите шанс (0-100)" min="0" max="100">
         </div>
-    </aside>
-    <section class="content">
-        <div id="activations" class="tab-content active">
-            <div class="table-container">
-                <div class="table-header">
-                    <div class="th">Флаг страны</div>
-                    <div class="th">Название страны</div>
-                    <div class="th">Кол-во штук</div>
-                    <div class="th">Цена</div>
-                </div>
-                <div class="table-body">
-
-                </div>
-            </div>
-        </div>
-        <div id="rent" class="tab-content">
-            <p>Аренда пока недоступна</p>
-            <div class="rent-buttons">
-                <!--<button class="disabled-btn">Флаг</button>
-                <button class="disabled-btn">Флаг</button>
-                <button class="disabled-btn">Флаг</button>
-                <button class="disabled-btn">Флаг</button>!-->
-            </div>
-        </div>
-    </section>
-</main>
-
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div class="modal-country">
-            <img src="" alt="" class="country-flag-modal">
-            <h2 class="country-name-modal"></h2>
-        </div>
-        <p>Кол-во штук: <span class="stock-modal"></span></p>
-        <p>Цена: <span class="price-modal"></span></p>
-        <p>Telegram номер  <span class="country-name-modal"></span></p>
-        <ul class="benefits-list"></ul>
-
-        <div class="modal-buttons">
-            <button class="modal-back-btn">Назад</button>
-            <button class="modal-buy-btn"><a href="https://t.me/aimbotz">Купить</a></button>
+        <div class="bet-input-container" id="betInputContainer">
+            <input type="number" id="bet" placeholder="Введите ставку" min="0">
         </div>
     </div>
-</div>
 
-<div id="articleModal" class="article-modal">
-    <div class="article-modal-content">
-        <span class="close">&times;</span>
-        <h2 class="article-title">Как использовать виртуальный номер для Telegram</h2>
-        <p>Виртуальный номер для Telegram — это отличный способ обеспечить себе анонимность и безопасность при использовании мессенджера. С помощью виртуального номера вы можете регистрировать аккаунты без необходимости использования своей личной SIM-карты. Это особенно полезно, если вы хотите создать несколько аккаунтов или сохранить свою конфиденциальность. </p>
-        <p>Для того чтобы купить виртуальный номер на Telesim, вам нужно выбрать страну, которая вас интересует, а затем, после покупки, воспользоваться номером, чтобы зарегистрироваться в Telegram. Это очень удобно и быстро. </p>
-        <p>После того как аккаунт создан, вы можете пользоваться всеми возможностями Telegram, как и с обычным номером. Приятного общения!</p>
-    </div>
-</div>
+    <div class="notification" id="notification"></div>
 
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script>
-    // Ensure the table renders, and all buttons are clickable and functional
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-        const tableBody = document.querySelector('.table-body');
-        const modal = document.getElementById('modal');
-        const closeModalBtn = document.querySelector('.close');
-        const modalBackBtn = document.querySelector('.modal-back-btn');
-        const articleModal = document.getElementById('articleModal');
-        const articleCloseBtn = articleModal.querySelector('.close');
-        const articleBtn = document.getElementById('articleBtn'); 
-    
-        // Ensure Tab switching works
-        tabBtns.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabBtns.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-                tab.classList.add('active');
-                const tabId = tab.dataset.tab;
-                document.getElementById(tabId).classList.add('active');
-            });
+    <!-- Звуки для победы и поражения -->
+    <audio id="winSound" src="win.mp3"></audio>
+    <audio id="loseSound" src="lose.mp3"></audio>
+
+    <script>
+        const spinButton = document.getElementById('spinButton');
+        const chanceInputContainer = document.getElementById('chanceInputContainer');
+        const betInputContainer = document.getElementById('betInputContainer');
+        const chanceInput = document.getElementById('chance');
+        const betInput = document.getElementById('bet');
+        const winSound = document.getElementById('winSound');
+        const loseSound = document.getElementById('loseSound');
+        const balanceSpan = document.getElementById('balance');
+        let balance = 1000;
+
+        // Показываем окно ввода при наведении
+        spinButton.addEventListener('mouseover', () => {
+            chanceInputContainer.classList.add('show');
+            betInputContainer.classList.add('show');
         });
-    
-        // Table Data Rendering
-        const countryData = {
-            countries: [
-                { flag: 'https://flagcdn.com/w40/ru.png', country: 'Россия [физ + отлега]', stock: 3, price: '300 ₽', benefits: ["Для активации Telegram", "Стабильная работа", "Выгодные цены"] },
-                { flag: 'https://flagcdn.com/w40/us.png', country: 'США [физ + отлега]', stock: 1, price: '300 ₽', benefits: ["Для активации Telegram", "Стабильная работа", "Выгодные цены"] }
-            ]
-        };
-    
-        function renderTable() {
-            tableBody.innerHTML = ''; 
-            countryData.countries.forEach((item, index) => {
-                const row = document.createElement('div');
-                row.classList.add('table-row');
-                row.innerHTML = `
-                    <div><img src="${item.flag}" alt="${item.country} Flag"></div>
-                    <div>${item.country}</div>
-                    <div>${item.stock}</div>
-                    <div>${item.price}</div>
-                `;
-                row.addEventListener('click', () => openModal(index));
-                tableBody.appendChild(row);
-            });
-        }
-        renderTable();
-    
-        // Modal functionality
-        function openModal(index) {
-            const country = countryData.countries[index];
-            document.querySelector('.country-flag-modal').src = country.flag;
-            document.querySelector('.country-name-modal').textContent = country.country;
-            document.querySelector('.stock-modal').textContent = country.stock;
-            document.querySelector('.price-modal').textContent = country.price;
-            const benefitsList = document.querySelector('.benefits-list');
-            benefitsList.innerHTML = '';
-            country.benefits.forEach(benefit => {
-                const li = document.createElement('li');
-                li.textContent = benefit;
-                benefitsList.appendChild(li);
-            });
-    
-            modal.classList.add('active');
-        }
-    
-        // Close modal
-        closeModalBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-        modalBackBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-    
-        // Article modal functionality
-        articleBtn.addEventListener('click', () => {
-            articleModal.classList.add('active');
-        });
-        articleCloseBtn.addEventListener('click', () => {
-            articleModal.classList.remove('active');
-        });
-    
-        // Close modal when clicking outside
-        window.addEventListener('click', (e) => {
-            if(e.target === modal || e.target === articleModal){
-                modal.classList.remove('active');
-                articleModal.classList.remove('active');
+
+        // Скрываем окно ввода при нажатии на кнопку
+        spinButton.addEventListener('click', () => {
+            let chance = parseInt(chanceInput.value);
+            let bet = parseInt(betInput.value);
+
+            if (isNaN(chance) || chance < 0 || chance > 100) {
+                alert("Введите корректный шанс от 0 до 100");
+                return;
             }
+
+            if (isNaN(bet) || bet <= 0 || bet > balance) {
+                alert("Введите корректную ставку. Она должна быть больше 0 и не превышать ваш баланс.");
+                return;
+            }
+
+            balance -= bet; // Снимаем ставку
+            
+            // Проверяем, не уходит ли баланс в минус
+            if (balance < 0) {
+                balance += bet; // Возвращаем ставку
+                updateBalance();
+                alert("Недостаточно средств на балансе.");
+                return;
+            }
+
+            updateBalance(); // Обновляем баланс сразу после снятия ставки
+            spinRoulette(chance, bet);
+            chanceInputContainer.classList.remove('show');
+            betInputContainer.classList.remove('show');
         });
-    });
+
+        function spinRoulette(chance, bet) {
+            let winAngle = (chance / 100) * 360;
+            let roulette = document.getElementById('roulette');
+            let degrees = Math.floor(Math.random() * 3600) + 1800; // 5-10 полных оборотов
+            roulette.style.background = `conic-gradient(green 0deg ${winAngle}deg, red ${winAngle}deg 360deg)`;
+            roulette.style.transition = 'transform 6s ease-out';
+            roulette.style.transform = `rotate(${degrees}deg)`;
+
+            setTimeout(() => {
+                let finalRotation = degrees % 360; // Угол, на котором остановилась рулетка
+                let win = finalRotation >= (360 - winAngle);
+                let resultText = win ? "Поздравляем, вы выиграли!" : "Вы проиграли. Попробуйте снова!";
+
+                let payoutMultiplier = 100 / chance; // Чем меньше шанс, тем больше выплата
+                let payout = win ? bet * payoutMultiplier : 0;
+
+                balance += payout; // Начисляем выплату
+                updateBalance(); // Обновляем баланс на странице
+
+                showNotification(resultText + (win ? ` Вы выиграли ${payout.toFixed(2)} UP!` : ""));
+
+                // Воспроизводим звук в зависимости от результата
+                if (win) {
+                    winSound.play();  // Звук победы
+                } else {
+                    loseSound.play();  // Звук поражения
+                }
+
+            }, 6000); // Duration of roulette spin animation
+        }
+
+        function updateBalance() {
+            balanceSpan.textContent = balance.toFixed(2);
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000); // Уведомление исчезает через 2 секунды
+        }
     </script>
-    
-<style>
-    header {
-      background-color: #000000; /* Темно-черный цвет */
-      color: white; /* Цвет текста */
-      padding: 20px; /* Отступы */
-      text-align: center; /* Выравнивание текста по центру */
-    }
-    </style>
-    </head>
-    <body>
-    
-    <header>
-      <h3>© 2025 ООО «Telesim»</h3>
-      <nav>
-      </nav>
-    </header>
-    <style>
-    /* Общие стили */
-    body {
-        font-family: Montserrat, sans-serif;
-        margin: 0;
-        padding: 0;
-        background: #151515;
-        color: #fff;
-        overflow-x: hidden;
-    }
-
-    /* Плавная адаптация для мобильных устройств */
-    @media (max-width: 640px) {
-        .logo {
-            font-size: 1.5em;
-        }
-
-        nav a {
-            font-size: 20px;
-        }
-
-        .tabs {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            position: relative;
-            left: 70px;
-        }
-
-        .tab-btn {
-        font-size: 1em; /* Увеличиваем размер шрифта */
-        padding: 10px;  /* Увеличиваем padding для удобства клика */
-        z-index: 10;    /* Убедимся, что кнопки всегда поверх других элементов */ 
-        padding-right: 5px;
-    }
-
-        .table-container {
-            margin-top: 40px;
-            margin-right: 150px;
-            
-        }
-
-        .table-row {
-            display: block;
-            padding: 100px;
-            margin-bottom: 10px;
-            
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .table-header {
-            display: block;
-        }
-
-        .content {
-            padding: 50px;
-            position: relative;
-            right: 170px;
-        }
-
-        .modal-content {
-            width: 100%;
-            width: 280px;
-            margin: 10% auto;
-            position: relative;
-            right: 80px;
-            bottom:150px;
-        }
-
-        .article-modal-content {
-            width: 90%;
-        }
-
-        header {
-            text-align: center;
-        }
-    }
-
-    /* Медиазапрос для экранов меньше 480px (смартфоны) */
-    @media (max-width: 480px) {
-        .logo {
-            font-size: 1.2em;
-        }
-
-        .tab-btn {
-            font-size: 0.8em;
-            padding: 6px;
-        }
-
-        .table-row {
-            display: block;
-            font-size: 0.9em;
-        }
-
-        .content {
-            padding: 10px;
-        }
-
-        .table-body {
-            font-size: 0.8em;
-        }
-    }
-</style>
-
 </body>
 </html>
