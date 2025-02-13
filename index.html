@@ -54,7 +54,6 @@
             border-radius: 12px;
             border: none;
             font-size: 18px;
-            
         }
         button {
             background: #ff9800;
@@ -85,7 +84,6 @@
             pointer-events: none;
             border: 2px solid white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            
         }
 
         .notification.show {
@@ -97,7 +95,6 @@
             position: absolute;
             top: 60px; /* Начальная позиция, немного выше кнопки */
             left: 50%;
-            
             transform: translateX(-50%);
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
@@ -112,7 +109,7 @@
             max-width: 600px; /* Максимальная ширина 600 пикселей */
         }
 
-         /* Окно ввода ставки */
+        /* Окно ввода ставки */
         .bet-input-container {
             position: absolute;
             max-width: 600px; /* Максимальная ширина 600 пикселей */
@@ -134,6 +131,29 @@
             font-size: 24px;
             margin-bottom: 20px;
         }
+
+        /* Стили для окна пополнения баланса */
+        .deposit-input-container {
+            position: absolute;
+            top: 260px; /* Позиция окна пополнения баланса */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            display: none; /* Скрываем по умолчанию */
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            max-width: 600px; /* Максимальная ширина 600 пикселей */
+        }
+
+        .deposit-input-container input[type="number"] {
+            width: 200px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -149,6 +169,12 @@
         </div>
         <div class="bet-input-container" id="betInputContainer">
             <input type="number" id="bet" placeholder="Введите ставку" min="0">
+        </div>
+        <!-- Кнопка и окно для пополнения баланса -->
+        <button id="depositButton">Пополнить баланс</button>
+        <div class="deposit-input-container" id="depositInputContainer">
+            <input type="number" id="depositAmount" placeholder="Введите сумму (0-5000)" min="0" max="5000" style="width: 215px;">
+            <button id="confirmDepositButton">Подтвердить пополнение</button>
         </div>
     </div>
 
@@ -169,90 +195,119 @@
         const winSound = document.getElementById('winSound');
         const loseSound = document.getElementById('loseSound');
         const balanceSpan = document.getElementById('balance');
-        const spinSound = document.getElementById('spinSound'); // Добавляем звук вращения
+        const spinSound = document.getElementById('spinSound');
+        const depositButton = document.getElementById('depositButton');
+        const depositInputContainer = document.getElementById('depositInputContainer');
+        const depositAmountInput = document.getElementById('depositAmount');
+        const confirmDepositButton = document.getElementById('confirmDepositButton');
+        const notification = document.getElementById('notification');
+        
         let balance = 1000;
+        let lastDepositTime = null;
 
-        // Скрываем окно ввода при нажатии на кнопку
+        // Функция для отображения уведомлений
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Функция для обновления баланса на странице
+        function updateBalance() {
+            balanceSpan.textContent = balance.toFixed(2);
+        }
+
+        // Скрываем окно ввода при нажатии на кнопку "Крутить"
         spinButton.addEventListener('click', () => {
             let chance = parseInt(chanceInput.value);
             let bet = parseInt(betInput.value);
 
             if (isNaN(chance) || chance < 0 || chance > 100) {
-                alert("Введите корректный шанс от 0 до 100");
+                showNotification("Введите корректный шанс от 0 до 100");
                 return;
             }
 
             if (isNaN(bet) || bet <= 0 || bet > balance) {
-                alert("Введите корректную ставку. Она должна быть больше 0 и не превышать ваш баланс.");
+                showNotification("Введите корректную ставку. Она должна быть больше 0 и не превышать ваш баланс.");
                 return;
             }
 
-            balance -= bet; // Снимаем ставку
-            
-            // Проверяем, не уходит ли баланс в минус
+            balance -= bet;
             if (balance < 0) {
-                balance += bet; // Возвращаем ставку
+                balance += bet;
                 updateBalance();
-                alert("Недостаточно средств на балансе.");
+                showNotification("Недостаточно средств на балансе.");
                 return;
             }
 
-            updateBalance(); // Обновляем баланс сразу после снятия ставки
+            updateBalance();
             spinRoulette(chance, bet);
         });
 
         function spinRoulette(chance, bet) {
             let winAngle = (chance / 100) * 360;
             let roulette = document.getElementById('roulette');
-            let degrees = Math.floor(Math.random() * 3600) + 1800; // 5-10 полных оборотов
+            let degrees = Math.floor(Math.random() * 3600) + 1800;
             roulette.style.background = `conic-gradient(green 0deg ${winAngle}deg, red ${winAngle}deg 360deg)`;
             roulette.style.transition = 'transform 6s ease-out';
             roulette.style.transform = `rotate(${degrees}deg)`;
 
-            // Запускаем звук вращения
-            spinSound.currentTime = 0; // Сбрасываем время воспроизведения
+            spinSound.currentTime = 0;
             spinSound.play();
 
             setTimeout(() => {
-                let finalRotation = degrees % 360; // Угол, на котором остановилась рулетка
+                let finalRotation = degrees % 360;
                 let win = finalRotation >= (360 - winAngle);
                 let resultText = win ? "Поздравляем, вы выиграли!" : "Вы проиграли. Попробуйте снова!";
 
-                let payoutMultiplier = 100 / chance; // Чем меньше шанс, тем больше выплата
+                let payoutMultiplier = 100 / chance;
                 let payout = win ? bet * payoutMultiplier : 0;
 
-                balance += payout; // Начисляем выплату
-                updateBalance(); // Обновляем баланс на странице
+                balance += payout;
+                updateBalance();
 
                 showNotification(resultText + (win ? ` Вы выиграли ${payout.toFixed(2)} UP!` : ""));
 
-                // Останавливаем звук вращения
                 spinSound.pause();
-                spinSound.currentTime = 0; // Сбрасываем время воспроизведения
+                spinSound.currentTime = 0;
 
-                // Воспроизводим звук в зависимости от результата
                 if (win) {
-                    winSound.play();  // Звук победы
+                    winSound.play();
                 } else {
-                    loseSound.play();  // Звук поражения
+                    loseSound.play();
                 }
 
-            }, 6000); // Duration of roulette spin animation
+            }, 6000);
         }
 
-        function updateBalance() {
-            balanceSpan.textContent = balance.toFixed(2);
-        }
+        // Логика для кнопки "Пополнить баланс"
+        depositButton.addEventListener('click', () => {
+            depositInputContainer.style.display = 'flex'; // Показываем окно пополнения
+            depositAmountInput.value = ''; // Очищаем поле ввода при открытии
+        });
 
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.add('show');
+        // Подтверждение пополнения баланса
+        confirmDepositButton.addEventListener('click', () => {
+            let depositAmount = parseInt(depositAmountInput.value);
 
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000); // Уведомление исчезает через 2 секунды
-        }
+            if (isNaN(depositAmount) || depositAmount < 0 || depositAmount > 5000) {
+                showNotification("Введите корректную сумму пополнения от 0 до 5000.");
+                return;
+            }
+
+            if (lastDepositTime && (Date.now() - lastDepositTime) < 300000) { // 5 минут = 300000 мс
+                showNotification("Вы можете пополнять баланс только раз в 5 минут.");
+                return;
+            }
+
+            balance += depositAmount;
+            updateBalance();
+            lastDepositTime = Date.now(); // Обновляем время последнего пополнения
+            depositInputContainer.style.display = 'none'; // Скрываем окно пополнения
+            showNotification(`Баланс успешно пополнен на ${depositAmount} UP.`);
+        });
     </script>
 </body>
 </html>
