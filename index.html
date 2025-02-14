@@ -444,7 +444,7 @@
 
 
                 if (win) {
-                    balance += payout*2;
+                    balance += payout + bet;
                     updateBalance();
                     showNotification(`Вы выиграли ${payout.toFixed(2)} UP!`);
                     winSound.play();
