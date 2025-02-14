@@ -435,10 +435,16 @@
                 const finalRotation = degrees % 360;
                 const win = finalRotation >= (360 - winAngle);
                 const payoutMultiplier = 100 / chance;
-                const payout = win ? bet * payoutMultiplier : 0;
+// Рассчитываем общий выигрыш (включая ставку)
+                const totalPayout = win ? bet * payoutMultiplier : 0;
+// Вычитаем ставку, чтобы получить чистый выигрыш
+                const payout = win ? totalPayout - bet : 0;
+
+                console.log(payout); // Теперь payout будет чистым выигрышем
+
 
                 if (win) {
-                    balance += payout + bet;
+                    balance += payout*2;
                     updateBalance();
                     showNotification(`Вы выиграли ${payout.toFixed(2)} UP!`);
                     winSound.play();
