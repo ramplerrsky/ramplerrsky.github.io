@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Рулетка Шанса</title>
     <style>
+        /* Основные стили */
         body {
             display: flex;
             flex-direction: column;
@@ -15,6 +16,35 @@
             color: white;
             font-family: "Multiround Pro";
         }
+
+        /* Стили для меню */
+        .menu {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .menu button {
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 15px;
+            border: none;
+            font-size: 20px;
+            background: #ff9800;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: "Multiround Pro";
+        }
+        .menu button:hover {
+            background: #e68900;
+        }
+
+        /* Стили для баланса */
+        .balance {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Стили для рулетки */
         .roulette-container {
             position: relative;
             width: 320px;
@@ -23,6 +53,7 @@
             overflow: hidden;
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
             border: 5px solid #444;
+            display: none;
         }
         .roulette {
             width: 100%;
@@ -43,19 +74,74 @@
             border-top: 30px solid yellow;
             z-index: 10;
         }
+
+        /* Стили для контролов рулетки */
         .controls {
             margin-top: 20px;
             text-align: center;
             position: relative;
+            display: none;
         }
-        input, button {
+        .controls input, .controls button {
             padding: 12px;
             margin: 8px;
             border-radius: 12px;
             border: none;
             font-size: 18px;
         }
+
+        /* Стили для Dice */
+        .dice-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+        .dice-options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .dice-options label {
+            margin: 5px;
+            font-size: 18px;
+        }
+        .dice-options select {
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            background-color: #444;
+            color: white;
+            width: 100%;
+            max-width: 200px; /* Added maximum width */
+        }
+        .dice-options select option {
+            padding: 5px;
+        }
+        .dice-result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        /* Общие стили для кнопок */
         button {
+            background: #ff9800;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: "Multiround Pro";
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 15px;
+            border: none;
+            font-size: 20px;
             background: #ff9800;
             color: white;
             cursor: pointer;
@@ -66,7 +152,7 @@
             background: #e68900;
         }
 
-        /* Стили для уведомления */
+        /* Стили для уведомлений */
         .notification {
             position: fixed;
             top: 30%;
@@ -85,127 +171,175 @@
             border: 2px solid white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         }
-
         .notification.show {
             opacity: 1;
         }
 
-        /* Окно ввода шанса */
-        .chance-input-container {
-            position: absolute;
-            top: 60px; /* Начальная позиция, немного выше кнопки */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            width: 250px;
-            border-radius: 12px;
-            display: flex; /* Изменено с none на flex для видимости */
-            flex-direction: column;
-            align-items: center;
-            border: 2px solid white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            max-width: 600px; /* Максимальная ширина 600 пикселей */
-        }
-
-        /* Окно ввода ставки */
-        .bet-input-container {
-            position: absolute;
-            max-width: 600px; /* Максимальная ширина 600 пикселей */
-            top: 160px; /* Начальная позиция, немного выше кнопки */
-            left: 50%;
-            transform: translateX(-50%);
+        /* Стили для ввода шанса и ставки */
+        .chance-input-container, .bet-input-container {
+            position: relative;
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
             padding: 10px;
             border-radius: 12px;
-            display: flex; /* Изменено с none на flex для видимости */
+            display: flex;
             flex-direction: column;
             align-items: center;
             border: 2px solid white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
         }
-
-        .balance {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        /* Стили для окна пополнения баланса */
-        .deposit-input-container {
-            position: absolute;
-            top: 260px; /* Позиция окна пополнения баланса */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 12px;
-            display: none; /* Скрываем по умолчанию */
-            flex-direction: column;
-            align-items: center;
-            border: 2px solid white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            max-width: 600px; /* Максимальная ширина 600 пикселей */
-        }
-
-        .deposit-input-container input[type="number"] {
+        .chance-input-container input, .bet-input-container input {
             width: 200px;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* Стили для пополнения баланса */
+        .deposit-input-container {
+            position: relative;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .deposit-input-container input {
+            width: 200px;
+            margin-bottom: 10px;
+        }
+
+        /* Общие стили для select элементов */
+        select {
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            background-color: #444;
+            color: white;
             margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
+    <div class="menu">
+        <button id="playRouletteButton">Рулетка</button>
+        <button id="playDiceButton">Dice</button>
+    </div>
     <div class="balance">Баланс: <span id="balance">1000</span> UP</div>
-    <div class="roulette-container">
+
+    <!-- Рулетка -->
+    <div class="roulette-container" id="rouletteContainer">
         <div class="arrow"></div>
         <div class="roulette" id="roulette"></div>
     </div>
-    <div class="controls">
+    <div class="controls" id="rouletteControls">
+        <div class="chance-input-container">
+            <input type="number" id="chance" placeholder="Введите шанс (0-100)" min="0" max="100">
+        </div>
+        <div class="bet-input-container">
+            <input type="number" id="rouletteBet" placeholder="Введите ставку" min="0">
+        </div>
         <button id="spinButton">Крутить</button>
-        <div class="chance-input-container" id="chanceInputContainer">
-            <input type="number" id="chance" placeholder="Введите шанс (0-100)" min="0" max="100" style="width: 215px;">
-        </div>
-        <div class="bet-input-container" id="betInputContainer">
-            <input type="number" id="bet" placeholder="Введите ставку" min="0">
-        </div>
-        <!-- Кнопка и окно для пополнения баланса -->
-        <button id="depositButton">Пополнить баланс</button>
-        <div class="deposit-input-container" id="depositInputContainer">
-            <input type="number" id="depositAmount" placeholder="Введите сумму (0-1000000)" min="0" max="5000" style="width: 215px;">
-            <button id="confirmDepositButton">Подтвердить пополнение</button>
+        <button id="depositButtonRoulette">Пополнить баланс</button>
+        <div class="deposit-input-container" id="depositInputContainerRoulette">
+            <input type="number" id="depositAmountRoulette" placeholder="Введите сумму (0-5000)" min="0" max="5000">
+            <button id="confirmDepositButtonRoulette">Подтвердить пополнение</button>
         </div>
     </div>
 
+    <!-- Dice -->
+    <div class="dice-container" id="diceContainer">
+        <div class="dice-options">
+            <label for="diceType">Выберите тип игры:</label>
+            <select id="diceType">
+                <option value="evenOdd">Чет/Нечет (x2)</option>
+                <option value="highLow">Больше/Меньше (x2)</option>
+                <option value="specificNumber">Конкретное число (x3)</option>
+            </select>
+            <label for="diceBet">Введите ставку:</label>
+            <input type="number" id="diceBet" placeholder="Ставка" min="1">
+
+            <label for="diceChoice" id="diceChoiceLabel">Выберите:</label>
+            <select id="diceChoice"></select>
+
+        </div>
+        <button id="rollDiceButton">Бросить кости</button>
+        <button id="depositButtonDice">Пополнить баланс</button>
+        <div class="deposit-input-container" id="depositInputContainerDice">
+            <input type="number" id="depositAmountDice" placeholder="Введите сумму (0-5000)" min="0" max="5000">
+            <button id="confirmDepositButtonDice">Подтвердить пополнение</button>
+        </div>
+        <div class="dice-result" id="diceResult"></div>
+    </div>
+
+    <!-- Общий контейнер для пополнения баланса убрал -->
+
+
+    <!-- Уведомление -->
     <div class="notification" id="notification"></div>
 
-    <!-- Звуки для победы и поражения -->
+    <!-- Звуки -->
     <audio id="winSound" src="win.mp3"></audio>
     <audio id="loseSound" src="lose.mp3"></audio>
-    <!-- Звук вращения рулетки -->
     <audio id="spinSound" src="spin.mp3" loop></audio>
 
     <script>
+        // Элементы
+        const playRouletteButton = document.getElementById('playRouletteButton');
+        const playDiceButton = document.getElementById('playDiceButton');
+        const rouletteContainer = document.getElementById('rouletteContainer');
+        const rouletteControls = document.getElementById('rouletteControls');
+        const diceContainer = document.getElementById('diceContainer');
         const spinButton = document.getElementById('spinButton');
-        const chanceInputContainer = document.getElementById('chanceInputContainer');
-        const betInputContainer = document.getElementById('betInputContainer');
+        const rollDiceButton = document.getElementById('rollDiceButton');
+        const diceResult = document.getElementById('diceResult');
+        const balanceSpan = document.getElementById('balance');
+        const notification = document.getElementById('notification');
+
+        // Элементы для рулетки
+        const depositButtonRoulette = document.getElementById('depositButtonRoulette');
+        const depositInputContainerRoulette = document.getElementById('depositInputContainerRoulette');
+        const depositAmountRoulette = document.getElementById('depositAmountRoulette');
+        const confirmDepositButtonRoulette = document.getElementById('confirmDepositButtonRoulette');
         const chanceInput = document.getElementById('chance');
-        const betInput = document.getElementById('bet');
+        const rouletteBetInput = document.getElementById('rouletteBet');
+
+        // Элементы для Dice
+        const diceTypeSelect = document.getElementById('diceType');
+        const diceBetInput = document.getElementById('diceBet');
+        const diceChoiceSelect = document.getElementById('diceChoice');
+        const diceChoiceLabel = document.getElementById('diceChoiceLabel');
+        const depositButtonDice = document.getElementById('depositButtonDice');
+        const depositInputContainerDice = document.getElementById('depositInputContainerDice');
+        const depositAmountDice = document.getElementById('depositAmountDice');
+        const confirmDepositButtonDice = document.getElementById('confirmDepositButtonDice');
+
+        // Звуки
         const winSound = document.getElementById('winSound');
         const loseSound = document.getElementById('loseSound');
-        const balanceSpan = document.getElementById('balance');
-        const spinSound = document.getElementById('spinSound');
-        const depositButton = document.getElementById('depositButton');
-        const depositInputContainer = document.getElementById('depositInputContainer');
-        const depositAmountInput = document.getElementById('depositAmount');
-        const confirmDepositButton = document.getElementById('confirmDepositButton');
-        const notification = document.getElementById('notification');
-        
-        let balance = 1000;
-        let lastDepositTime = null;
+        const spinSoundAudio = document.getElementById('spinSound');
 
-        // Функция для отображения уведомлений
+        // Состояние
+        let balance = parseInt(localStorage.getItem('balance')) || 1000;
+        let lastDepositTime = null;
+        let canRollDice = true;
+
+        // Обновление баланса
+        function updateBalance() {
+            balanceSpan.textContent = balance.toFixed(2);
+            localStorage.setItem('balance', balance.toFixed(2));
+        }
+
+        // Уведомления
         function showNotification(message) {
             notification.textContent = message;
             notification.classList.add('show');
@@ -214,15 +348,58 @@
             }, 3000);
         }
 
-        // Функция для обновления баланса на странице
-        function updateBalance() {
-            balanceSpan.textContent = balance.toFixed(2);
+        // Общая функция для пополнения баланса
+        function setupDepositButton(depositButton, depositInputContainer, depositAmountInput, confirmDepositButton) {
+            depositButton.addEventListener('click', () => {
+                depositInputContainer.style.display = 'flex';
+                depositAmountInput.value = '';
+            });
+
+            confirmDepositButton.addEventListener('click', () => {
+                const depositAmount = parseInt(depositAmountInput.value);
+
+                if (isNaN(depositAmount) || depositAmount < 0 || depositAmount > 5000) {
+                    showNotification("Введите корректную сумму пополнения от 0 до 5000.");
+                    return;
+                }
+
+                if (lastDepositTime && (Date.now() - lastDepositTime) < 300000) {
+                    showNotification("Вы можете пополнять баланс только раз в 5 минут.");
+                    return;
+                }
+
+                balance += depositAmount;
+                updateBalance();
+                lastDepositTime = Date.now();
+                depositInputContainer.style.display = 'none';
+                showNotification(`Баланс успешно пополнен на ${depositAmount} UP.`);
+            });
         }
 
-        // Скрываем окно ввода при нажатии на кнопку "Крутить"
+        // Инициализация
+        updateBalance();
+
+        // Обработчики кнопок меню
+        playRouletteButton.addEventListener('click', () => {
+            rouletteContainer.style.display = 'flex';
+            rouletteControls.style.display = 'block';
+            diceContainer.style.display = 'none';
+
+            chanceInput.value = '';
+            rouletteBetInput.value = '';
+            chanceInput.focus();
+        });
+
+        playDiceButton.addEventListener('click', () => {
+            diceContainer.style.display = 'flex';
+            rouletteContainer.style.display = 'none';
+            rouletteControls.style.display = 'none';
+        });
+
+        // Логика рулетки
         spinButton.addEventListener('click', () => {
-            let chance = parseInt(chanceInput.value);
-            let bet = parseInt(betInput.value);
+            const chance = parseInt(chanceInput.value);
+            const bet = parseInt(rouletteBetInput.value);
 
             if (isNaN(chance) || chance < 0 || chance > 100) {
                 showNotification("Введите корректный шанс от 0 до 100");
@@ -235,79 +412,181 @@
             }
 
             balance -= bet;
-            if (balance < 0) {
-                balance += bet;
-                updateBalance();
-                showNotification("Недостаточно средств на балансе.");
-                return;
-            }
-
             updateBalance();
+
             spinRoulette(chance, bet);
         });
 
         function spinRoulette(chance, bet) {
-            let winAngle = (chance / 100) * 360;
-            let roulette = document.getElementById('roulette');
-            let degrees = Math.floor(Math.random() * 3600) + 1800;
+            const winAngle = (chance / 100) * 360;
+            const roulette = document.getElementById('roulette');
+            const degrees = Math.floor(Math.random() * 3600) + 1800;
             roulette.style.background = `conic-gradient(green 0deg ${winAngle}deg, red ${winAngle}deg 360deg)`;
             roulette.style.transition = 'transform 6s ease-out';
             roulette.style.transform = `rotate(${degrees}deg)`;
 
-            spinSound.currentTime = 0;
-            spinSound.play();
+            spinSoundAudio.currentTime = 0;
+            spinSoundAudio.play();
 
             setTimeout(() => {
-                let finalRotation = degrees % 360;
-                let win = finalRotation >= (360 - winAngle);
-                let resultText = win ? "Поздравляем, вы выиграли!" : "Вы проиграли. Попробуйте снова!";
+                spinSoundAudio.pause();
+                spinSoundAudio.currentTime = 0;
 
-                let payoutMultiplier = 100 / chance;
-                let payout = win ? bet * payoutMultiplier : 0;
-
-                balance += payout;
-                updateBalance();
-
-                showNotification(resultText + (win ? ` Вы выиграли ${payout.toFixed(2)} UP!` : ""));
-
-                spinSound.pause();
-                spinSound.currentTime = 0;
+                const finalRotation = degrees % 360;
+                const win = finalRotation >= (360 - winAngle);
+                const payoutMultiplier = 100 / chance;
+                const payout = win ? bet * payoutMultiplier : 0;
 
                 if (win) {
+                    balance += payout + bet;
+                    updateBalance();
+                    showNotification(`Вы выиграли ${payout.toFixed(2)} UP!`);
                     winSound.play();
                 } else {
+                    updateBalance();
+                    showNotification("Вы проиграли. Попробуйте снова!");
                     loseSound.play();
                 }
-
             }, 6000);
         }
 
-        // Логика для кнопки "Пополнить баланс"
-        depositButton.addEventListener('click', () => {
-            depositInputContainer.style.display = 'flex'; // Показываем окно пополнения
-            depositAmountInput.value = ''; // Очищаем поле ввода при открытии
+        // Обновление выбора для Dice
+        function updateDiceChoiceOptions(diceType) {
+            diceChoiceSelect.innerHTML = ''; // Очистить существующие опции
+
+            let options = [];
+            switch (diceType) {
+                case 'evenOdd':
+                    options = ['Чет', 'Нечет'];
+                    break;
+                case 'highLow':
+                    options = ['Больше 3', 'Меньше 3'];
+                    break;
+                case 'specificNumber':
+                    for (let i = 1; i <= 6; i++) {
+                        options.push(i.toString());
+                    }
+                    break;
+            }
+
+            // Заполнить выпадающий список новыми опциями
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                diceChoiceSelect.appendChild(optionElement);
+            });
+        }
+
+        // Показать/скрыть и обновить выбор при смене типа Dice
+        diceTypeSelect.addEventListener('change', () => {
+            const selectedType = diceTypeSelect.value;
+            updateDiceChoiceOptions(selectedType);
+            diceChoiceLabel.style.display = 'block';
+            diceChoiceSelect.style.display = 'block';
+
+            // Специально для "Конкретное число" можно отобразить выбор чисел
+            if(selectedType === 'specificNumber'){
+
+            } else{
+
+            }
         });
 
-        // Подтверждение пополнения баланса
-        confirmDepositButton.addEventListener('click', () => {
-            let depositAmount = parseInt(depositAmountInput.value);
+        // Инициализация выбора при загрузке страницы
+        updateDiceChoiceOptions(diceTypeSelect.value);
 
-            if (isNaN(depositAmount) || depositAmount < 0 || depositAmount > 1000000) {
-                showNotification("Введите корректную сумму пополнения от 0 до 1000000.");
+        // Логика Dice
+        rollDiceButton.addEventListener('click', () => {
+            if (!canRollDice) {
+                showNotification("Подождите 10 секунд перед новой ставкой.");
                 return;
             }
 
-            if (lastDepositTime && (Date.now() - lastDepositTime) < 300000) { // 5 минут = 300000 мс
-                showNotification("Вы можете пополнять баланс только раз в 5 минут.");
+            const bet = parseInt(diceBetInput.value);
+            const diceType = diceTypeSelect.value;
+            const diceChoice = diceChoiceSelect.value;
+
+            if (isNaN(bet) || bet <= 0 || bet > balance) {
+                showNotification("Введите корректную ставку. Она должна быть больше 0 и не превышать ваш баланс.");
                 return;
             }
 
-            balance += depositAmount;
+            balance -= bet;
             updateBalance();
-            lastDepositTime = Date.now(); // Обновляем время последнего пополнения
-            depositInputContainer.style.display = 'none'; // Скрываем окно пополнения
-            showNotification(`Баланс успешно пополнен на ${depositAmount} UP.`);
+
+            canRollDice = false;
+            rollDiceButton.disabled = true; // Disable the button
+            rollDiceButton.style.opacity = 0.5; // визуальный эффект
+
+            const roll = Math.floor(Math.random() * 6) + 1;
+            let payout = 0;
+
+            switch (diceType) {
+                case 'evenOdd':
+                    const isEven = roll % 2 === 0;
+                    const choseEven = diceChoice === 'Чет';
+
+                    if ((isEven && choseEven) || (!isEven && !choseEven)) {
+                        payout = bet * 2;
+                        balance += payout + bet;
+                        updateBalance();
+                        showNotification(`Выпало ${roll}. Ваш выигрыш ${payout.toFixed(2)} UP!`);
+                        winSound.play();
+                    } else {
+                        updateBalance();
+                        showNotification(`Выпало ${roll}. Вы проиграли!`);
+                        loseSound.play();
+                    }
+                    break;
+
+                case 'highLow':
+                    const isHigh = roll > 3;
+                    const choseHigh = diceChoice === 'Больше 3';
+
+                    if ((isHigh && choseHigh) || (!isHigh && !choseHigh)) {
+                        payout = bet * 2;
+                        balance += payout + bet;
+                        updateBalance();
+                        showNotification(`Выпало ${roll}. Ваш выигрыш ${payout.toFixed(2)} UP!`);
+                        winSound.play();
+                    } else {
+                        updateBalance();
+                        showNotification(`Выпало ${roll}. Вы проиграли!`);
+                        loseSound.play();
+                    }
+                    break;
+
+                case 'specificNumber':
+                    const selectedNumber = parseInt(diceChoice);
+
+                    if (roll === selectedNumber) {
+                        payout = bet * 3;
+                        balance += payout + bet;
+                        updateBalance();
+                        showNotification(`Выпало ${roll}. Ваш выигрыш ${payout.toFixed(2)} UP!`);
+                        winSound.play();
+                    } else {
+                        updateBalance();
+                        showNotification(`Выпало ${roll}. Вы проиграли!`);
+                        loseSound.play();
+                    }
+                    break;
+            }
+
+            diceResult.textContent = `Выпало: ${roll}.`;
+
+            // Re-enable the button after 10 seconds
+            setTimeout(() => {
+                canRollDice = true;
+                rollDiceButton.disabled = false; // Enable the button
+                rollDiceButton.style.opacity = 1;  // Restore opacity
+            }, 1000);
         });
+
+        // Настройка кнопок пополнения баланса
+        setupDepositButton(depositButtonRoulette, depositInputContainerRoulette, depositAmountRoulette, confirmDepositButtonRoulette);
+        setupDepositButton(depositButtonDice, depositInputContainerDice, depositAmountDice, confirmDepositButtonDice);
     </script>
 </body>
 </html>
