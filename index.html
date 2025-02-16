@@ -227,6 +227,36 @@
             color: white;
             margin-bottom: 10px;
         }
+        /* Медиа-запрос для мобильных устройств */
+@media (max-width: 600px) {
+    .roulette-container {
+        width: 250px; /* Уменьшаем размер рулетки */
+        height: 250px;
+    }
+
+    .menu button {
+        padding: 10px 20px; /* Уменьшаем размер кнопок */
+        font-size: 16px;
+    }
+
+    .balance {
+        font-size: 20px; /* Уменьшаем размер текста баланса */
+    }
+
+    .controls input, .controls button {
+        padding: 10px; /* Уменьшаем размер элементов управления */
+        font-size: 16px;
+    }
+
+    .dice-container {
+        width: 90%; /* Увеличиваем ширину контейнера для Dice */
+        max-width: 300px; /* Ограничиваем максимальную ширину */
+    }
+
+    .dice-options select, .dice-options input {
+        width: 100%; /* Делаем элементы управления Dice на всю ширину */
+    }
+}
     </style>
 </head>
 <body>
@@ -593,6 +623,7 @@
         // Настройка кнопок пополнения баланса
         setupDepositButton(depositButtonRoulette, depositInputContainerRoulette, depositAmountRoulette, confirmDepositButtonRoulette);
         setupDepositButton(depositButtonDice, depositInputContainerDice, depositAmountDice, confirmDepositButtonDice);
+        
     </script>
 </body>
 </html>
