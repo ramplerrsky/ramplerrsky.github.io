@@ -521,7 +521,7 @@ body {
         function spinRoulette(chance, bet) {
     const winAngle = (chance / 100) * 360;
     const roulette = document.getElementById('roulette');
-    const degrees = Math.floor(Math.random() * 3600) + 1800;
+    const degrees = Math.floor(Math.random() *7200) + 3600;
     roulette.style.background = `conic-gradient(green 0deg ${winAngle}deg, red ${winAngle}deg 360deg)`;
     roulette.style.transition = 'transform 10s ease-out';  // Увеличили время
     roulette.style.transform = `rotate(${degrees}deg)`;
