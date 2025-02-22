@@ -294,12 +294,15 @@
             border-top: 30px solid rgb(0, 0, 0);
             z-index: 10;
         }
+        #playDiceButton{
+            
+        }
     </style>
 </head>
 <body>
     <div class="menu">
         <button id="playRouletteButton">Рулетка</button>
-        <button id="playDiceButton">Dice</button>
+        <button id="playDiceButton">Dice [выкл]</butaton>
         <button id="changeBackgroundButton">Сменить фон</button> <!-- Новая кнопка -->
     </div>
     <div class="balance">Баланс: <span id="balance">1000</span> UP</div>
@@ -360,6 +363,7 @@
         // Элементы
         const playRouletteButton = document.getElementById('playRouletteButton');
         const playDiceButton = document.getElementById('playDiceButton');
+        playDiceButton.disabled = true;
         const changeBackgroundButton = document.getElementById('changeBackgroundButton');
         const rouletteContainer = document.getElementById('rouletteContainer');
         const rouletteControls = document.getElementById('rouletteControls');
