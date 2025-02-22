@@ -468,7 +468,7 @@ window.addEventListener('load', () => {
         }
 
         // Запуск фейерверков
-        confetti({
+        confetti({n,              
             particleCount: 30, // Количество частиц
             spread: 70, // Разброс
             origin: { y: 0.6 }, // Начальная точка (нижняя часть экрана)
@@ -873,6 +873,56 @@ body {
     background-size: cover; /* Растягиваем фон на весь экран */
     background-position: center; /* Центрируем фон */
     background-repeat: no-repeat; /* Отключаем повторение */
+}
+@media (max-width: 280px) {
+
+
+    .menu button {
+        padding: 4px 8px; /* Уменьшаем размер кнопок */
+        font-size: 10px;
+        margin: 5px; /* Уменьшаем отступы между кнопками */
+    }
+
+    .balance {
+        font-size: 14px; /* Уменьшаем размер текста баланса */
+        margin-bottom: 10px; /* Уменьшаем отступ снизу */
+    }
+
+    .roulette-container {
+        width: 120px; /* Уменьшаем размер рулетки */
+        height: 120px;
+        border: 2px solid #444; /* Уменьшаем толщину границы */
+    }
+
+    .arrow {
+        top: 3px; /* Сдвигаем стрелку выше */
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 12px solid rgb(0, 0, 0); /* Уменьшаем размер стрелки */
+    }
+
+    .controls input, .controls button {
+        padding: 4px; /* Уменьшаем отступы */
+        font-size: 10px; /* Уменьшаем размер шрифта */
+        margin: 5px; /* Уменьшаем отступы между элементами */
+    }
+
+    .dice-container {
+        padding: 5px; /* Уменьшаем отступы */
+        width: 90%; /* Увеличиваем ширину контейнера для Dice */
+        max-width: 180px; /* Ограничиваем максимальную ширину */
+    }
+
+    .dice-options select, .dice-options input {
+        font-size: 10px; /* Уменьшаем размер шрифта */
+        width: 100%; /* Делаем элементы управления Dice на всю ширину */
+        margin: 5px; /* Уменьшаем отступы между элементами */
+    }
+
+    .notification {
+        font-size: 12px; /* Уменьшаем размер шрифта уведомлений */
+        padding: 8px; /* Уменьшаем отступы */
+    }
 }
 </style>
 </body>
