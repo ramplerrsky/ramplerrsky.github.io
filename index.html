@@ -455,7 +455,7 @@ window.addEventListener('load', () => {
 
     updateBalance();
 });
-        function startConfetti() {
+function startConfetti() {
     const duration = 1 * 1000; // 2 секунды
     const animationEnd = Date.now() + duration;
 
@@ -468,7 +468,7 @@ window.addEventListener('load', () => {
         }
 
         // Запуск фейерверков
-        confetti({n,              
+        confetti({
             particleCount: 30, // Количество частиц
             spread: 70, // Разброс
             origin: { y: 0.6 }, // Начальная точка (нижняя часть экрана)
