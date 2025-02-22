@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Рулетка Шанса</title>
+    <title>UpROOLL - OOOUES</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <h1>UpRool</h1>
+    <h5 style="position: relative; bottom: 30px;"><a style="color: white;" href="https://t.me/TheUpRoll">telegram uproll'a</a></h5>
     <style>
         /* Основные стили */
         body {
@@ -14,7 +17,8 @@
             height: 100vh;
             background: radial-gradient(circle, #333, #111);
             color: white;
-            font-family: "Multiround Pro";
+            font-family: "Home Video";
+            transition: background-image 0.5s; /* Плавный переход фона */
         }
 
         /* Стили для меню */
@@ -32,7 +36,7 @@
             color: white;
             cursor: pointer;
             transition: background 0.3s;
-            font-family: "Multiround Pro";
+            font-family: "Home Video";
         }
         .menu button:hover {
             background: #e68900;
@@ -136,17 +140,12 @@
             color: white;
             cursor: pointer;
             transition: background 0.3s;
-            font-family: "Multiround Pro";
+            font-family: "Home Video";
             padding: 15px 30px;
             margin: 10px;
             border-radius: 15px;
             border: none;
             font-size: 20px;
-            background: #ff9800;
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-family: "Multiround Pro";
         }
         button:hover {
             background: #e68900;
@@ -228,96 +227,76 @@
             margin-bottom: 10px;
         }
         /* Медиа-запрос для мобильных устройств */
-@media (max-width: 600px) {
-    .roulette-container {
-        width: 250px; /* Уменьшаем размер рулетки */
-        height: 250px;
-    }
+        @media (max-width: 600px) {
+            .roulette-container {
+                width: 250px; /* Уменьшаем размер рулетки */
+                height: 250px;
+            }
 
-    .menu button {
-        padding: 10px 20px; /* Уменьшаем размер кнопок */
-        font-size: 16px;
-    }
+            .menu button {
+                padding: 10px 20px; /* Уменьшаем размер кнопок */
+                font-size: 16px;
+            }
 
-    .balance {
-        font-size: 20px; /* Уменьшаем размер текста баланса */
-    }
+            .balance {
+                font-size: 20px; /* Уменьшаем размер текста баланса */
+            }
 
-    .controls input, .controls button {
-        padding: 10px; /* Уменьшаем размер элементов управления */
-        font-size: 16px;
-    }
+            .controls input, .controls button {
+                padding: 10px; /* Уменьшаем размер элементов управления */
+                font-size: 16px;
+            }
 
-    .dice-container {
-        width: 90%; /* Увеличиваем ширину контейнера для Dice */
-        max-width: 300px; /* Ограничиваем максимальную ширину */
-    }
+            .dice-container {
+                width: 90%; /* Увеличиваем ширину контейнера для Dice */
+                max-width: 300px; /* Ограничиваем максимальную ширину */
+            }
 
-    .dice-options select, .dice-options input {
-        width: 100%; /* Делаем элементы управления Dice на всю ширину */
-    }
-}
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: linear-gradient(-45deg, #000000, #303030, #666666, #b9b9b9);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    color: white;
-    font-family: "Multiround Pro";
-}
-.roulette {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    position: relative;
+            .dice-options select, .dice-options input {
+                width: 100%; /* Делаем элементы управления Dice на всю ширину */
+            }
+        }
 
-    transition: transform 6s cubic-bezier(0.25, 0.1, 0.25, 1);
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(720deg);
+            }
+        }
 
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(720deg);
-    }
-}
-
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-.arrow {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-top: 30px solid rgb(0, 0, 0);
-    z-index: 10;
-}
-
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .arrow {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid rgb(0, 0, 0);
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
     <div class="menu">
         <button id="playRouletteButton">Рулетка</button>
         <button id="playDiceButton">Dice</button>
+        <button id="changeBackgroundButton">Сменить фон</button> <!-- Новая кнопка -->
     </div>
     <div class="balance">Баланс: <span id="balance">1000</span> UP</div>
 
@@ -355,7 +334,6 @@ body {
 
             <label for="diceChoice" id="diceChoiceLabel">Выберите:</label>
             <select id="diceChoice"></select>
-
         </div>
         <button id="rollDiceButton">Бросить кости</button>
         <button id="depositButtonDice">Пополнить баланс</button>
@@ -366,9 +344,6 @@ body {
         <div class="dice-result" id="diceResult"></div>
     </div>
 
-    <!-- Общий контейнер для пополнения баланса убрал -->
-
-
     <!-- Уведомление -->
     <div class="notification" id="notification"></div>
 
@@ -376,11 +351,12 @@ body {
     <audio id="winSound" src="win.mp3"></audio>
     <audio id="loseSound" src="lose.mp3"></audio>
     <audio id="spinSound" src="spin.mp3" loop></audio>
-
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         // Элементы
         const playRouletteButton = document.getElementById('playRouletteButton');
         const playDiceButton = document.getElementById('playDiceButton');
+        const changeBackgroundButton = document.getElementById('changeBackgroundButton');
         const rouletteContainer = document.getElementById('rouletteContainer');
         const rouletteControls = document.getElementById('rouletteControls');
         const diceContainer = document.getElementById('diceContainer');
@@ -460,9 +436,65 @@ body {
                 showNotification(`Баланс успешно пополнен на ${depositAmount} UP.`);
             });
         }
+        function startConfetti() {
+    const duration = 1 * 1000; // 2 секунды
+    const animationEnd = Date.now() + duration;
 
-        // Инициализация
-        updateBalance();
+    const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            return;
+        }
+
+        // Запуск фейерверков
+        confetti({
+            particleCount: 30, // Количество частиц
+            spread: 70, // Разброс
+            origin: { y: 0.6 }, // Начальная точка (нижняя часть экрана)
+        });
+    }, 200); // Интервал между запусками
+}
+        // Функция для установки фона
+        function setBackground(imageUrl) {
+    document.body.style.backgroundImage = `url(${imageUrl})`;
+    document.body.style.backgroundSize = 'cover'; // Растягиваем изображение на весь экран
+    document.body.style.backgroundPosition = 'center'; // Центрируем изображение
+    document.body.style.backgroundRepeat = 'no-repeat'; // Отключаем повторение
+    localStorage.setItem('backgroundImage', imageUrl); // Сохраняем в localStorage
+}
+
+        // Загрузка изображения
+        changeBackgroundButton.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*'; // Только изображения
+
+            input.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (readerEvent) => {
+                        setBackground(readerEvent.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            input.click(); // Открытие диалогового окна для выбора файла
+        });
+        
+
+        // Установка фонового изображения при загрузке страницы
+        window.addEventListener('load', () => {
+            const savedImage = localStorage.getItem('backgroundImage');
+            if (savedImage) {
+                setBackground(savedImage);
+            }
+
+            updateBalance();
+        });
 
         // Обработчики кнопок меню
         playRouletteButton.addEventListener('click', () => {
@@ -503,42 +535,42 @@ body {
         });
 
         function spinRoulette(chance, bet) {
-    const winAngle = (chance / 100) * 360;
-    const roulette = document.getElementById('roulette');
-    const degrees = Math.floor(Math.random() *7200) + 3600;
-    roulette.style.background = `conic-gradient(green 0deg ${winAngle}deg, red ${winAngle}deg 360deg)`;
-    roulette.style.transition = 'transform 10s ease-out';  // Увеличили время
-    roulette.style.transform = `rotate(${degrees}deg)`;
+            const winAngle = (chance / 100) * 360;
+            const roulette = document.getElementById('roulette');
+            const degrees = Math.floor(Math.random() * 7200) + 3600;
+            roulette.style.background = `conic-gradient(white 0deg ${winAngle}deg, gray ${winAngle}deg 360deg)`;
+            roulette.style.transition = 'transform 12s ease-out';  // Увеличили время
+            roulette.style.transform = `rotate(${degrees}deg)`;
 
-    spinSoundAudio.currentTime = 0;
-    spinSoundAudio.play();
+            spinSoundAudio.currentTime = 0;
+            spinSoundAudio.play();
 
-    setTimeout(() => {
-        spinSoundAudio.pause();
-        spinSoundAudio.currentTime = 0;
+            setTimeout(() => {
+                spinSoundAudio.pause();
+                spinSoundAudio.currentTime = 0;
 
-        const finalRotation = degrees % 360;
-        const win = finalRotation >= (360 - winAngle);
-        const payoutMultiplier = 100 / chance;
-// Рассчитываем общий выигрыш (включая ставку)
-        const totalPayout = win ? bet * payoutMultiplier : 0;
-// Вычитаем ставку, чтобы получить чистый выигрыш
-        const payout = win ? totalPayout - bet : 0;
+                const finalRotation = degrees % 360;
+                const win = finalRotation >= (360 - winAngle);
+                const payoutMultiplier = 100 / chance;
 
-        console.log(payout); // Теперь payout будет чистым выигрышем
+                // Рассчитываем общий выигрыш (включая ставку)
+                const totalPayout = win ? bet * payoutMultiplier : 0;
+                // Вычитаем ставку, чтобы получить чистый выигрыш
+                const payout = win ? totalPayout - bet : 0;
 
-        if (win) {
-            balance += (payout + bet);
-            updateBalance();
-            showNotification(`Вы выиграли ${((payout + bet)).toFixed(2)} UP!`);
-            winSound.play();
-        } else {
-            updateBalance();
-            showNotification("Вы проиграли. Попробуйте снова!");
-            loseSound.play();
-        }
-    }, 10000); // Увеличили время ожидания до 10 секунд
+                if (win) {
+    balance += (payout + bet);
+    updateBalance();
+    showNotification(`Вы выиграли ${((payout + bet)).toFixed(2)} UP!`);
+    winSound.play();
+    startConfetti(); // Запускаем фейерверки
+} else {
+    updateBalance();
+    showNotification("Вы проиграли. Попробуйте снова!");
+    loseSound.play();
 }
+            }, 12000); // Увеличили время ожидания до 10 секунд
+        }
 
         // Обновление выбора для Dice
         function updateDiceChoiceOptions(diceType) {
@@ -574,13 +606,6 @@ body {
             updateDiceChoiceOptions(selectedType);
             diceChoiceLabel.style.display = 'block';
             diceChoiceSelect.style.display = 'block';
-
-            // Специально для "Конкретное число" можно отобразить выбор чисел
-            if(selectedType === 'specificNumber'){
-
-            } else{
-
-            }
         });
 
         // Инициализация выбора при загрузке страницы
@@ -589,13 +614,14 @@ body {
         // Логика Dice
         rollDiceButton.addEventListener('click', () => {
             if (!canRollDice) {
-                showNotification("Подождите 10 секунд перед новой ставкой.");
+                showNotification("Подождите немного перед новой ставкой.");
                 return;
             }
 
             const bet = parseInt(diceBetInput.value);
             const diceType = diceTypeSelect.value;
             const diceChoice = diceChoiceSelect.value;
+
             if (isNaN(bet) || bet <= 0 || bet > balance) {
                 showNotification("Введите корректную ставку. Она должна быть больше 0 и не превышать ваш баланс.");
                 return;
@@ -605,8 +631,8 @@ body {
             updateBalance();
 
             canRollDice = false;
-            rollDiceButton.disabled = true; // Disable the button
-            rollDiceButton.style.opacity = 0.5; // визуальный эффект
+            rollDiceButton.disabled = true; // Отключить кнопку
+            rollDiceButton.style.opacity = 0.5; // Визуальный эффект
 
             const roll = Math.floor(Math.random() * 6) + 1;
             let payout = 0;
@@ -617,67 +643,218 @@ body {
                     const choseEven = diceChoice === 'Чет';
 
                     if ((isEven && choseEven) || (!isEven && !choseEven)) {
-                        payout = bet * 2;
-                        balance += payout + bet;
-                        updateBalance();
-                        showNotification(`Выпало ${roll}. Ваш выигрыш ${payout.toFixed(2)} UP!`);
-                        winSound.play();
-                    } else {
-                        updateBalance();
-                        showNotification(`Выпало ${roll}. Вы проиграли!`);
-                        loseSound.play();
-                    }
+    payout = bet * 2;
+    balance += payout + bet;
+    updateBalance();
+    showNotification(`Выпало ${roll}. Ваш выигрыш ${payout.toFixed(2)} UP!`);
+    winSound.play();
+    startConfetti(); // Запускаем фейерверки
+} else {
+    updateBalance();
+    showNotification(`Выпало ${roll}. Вы проиграли!`);
+    loseSound.play();
+}
                     break;
 
                 case 'highLow':
                     const isHigh = roll > 3;
                     const choseHigh = diceChoice === 'Больше 3';
 
-                    if ((isHigh && choseHigh) || (!isHigh && !choseHigh)) {
-                        payout = bet * 2;
-                        balance += payout + bet;
-                        updateBalance();
-                        showNotification(`Выпало ${roll}. Ваш выигрыш ${payout.toFixed(2)} UP!`);
-                        winSound.play();
-                    } else {
-                        updateBalance();
-                        showNotification(`Выпало ${roll}. Вы проиграли!`);
-                        loseSound.play();
-                    }
+                    if ((isEven && choseEven) || (!isEven && !choseEven)) {
+    payout = bet * 2;
+    balance += payout + bet;
+    updateBalance();
+    showNotification(`Выпало ${roll}. Ваш выигрыш ${payout.toFixed(2)} UP!`);
+    winSound.play();
+    startConfetti(); // Запускаем фейерверки
+} else {
+    updateBalance();
+    showNotification(`Выпало ${roll}. Вы проиграли!`);
+    loseSound.play();
+}
                     break;
 
                 case 'specificNumber':
                     const selectedNumber = parseInt(diceChoice);
 
-                    if (roll === selectedNumber) {
-                        payout = bet * 3;
-                        balance += payout + bet;
-                        updateBalance();
-                        showNotification(`Выпало ${roll}. Ваш выигрыш ${payout.toFixed(2)} UP!`);
-                        winSound.play();
-                    } else {
-                        updateBalance();
-                        showNotification(`Выпало ${roll}. Вы проиграли!`);
-                        loseSound.play();
-                    }
+                    if ((isEven && choseEven) || (!isEven && !choseEven)) {
+    payout = bet * 2;
+    balance += payout + bet;
+    updateBalance();
+    showNotification(`Выпало ${roll}. Ваш выигрыш ${payout.toFixed(2)} UP!`);
+    winSound.play();
+    startConfetti(); // Запускаем фейерверки
+} else {
+    updateBalance();
+    showNotification(`Выпало ${roll}. Вы проиграли!`);
+    loseSound.play();
+}
                     break;
             }
 
             diceResult.textContent = `Выпало: ${roll}.`;
 
-            // Re-enable the button after 10 seconds
+            // Включить кнопку снова через 10 секунд
             setTimeout(() => {
                 canRollDice = true;
-                rollDiceButton.disabled = false; // Enable the button
-                rollDiceButton.style.opacity = 1;  // Restore opacity
+                rollDiceButton.disabled = false; // Включить кнопку
+                rollDiceButton.style.opacity = 1;  // Восстановить непрозрачность
             }, 1000);
         });
 
         // Настройка кнопок пополнения баланса
         setupDepositButton(depositButtonRoulette, depositInputContainerRoulette, depositAmountRoulette, confirmDepositButtonRoulette);
         setupDepositButton(depositButtonDice, depositInputContainerDice, depositAmountDice, confirmDepositButtonDice);
-        
+        function setBackground(imageUrl) {
+    const img = new Image();
+    img.src = imageUrl;
+
+    img.onload = function() {
+        const width = img.width;
+        const height = img.height;
+
+        // Если изображение "горизонтальное", используем cover
+        if (width > height) {
+            document.body.style.backgroundSize = 'cover';
+        } else {
+            // Если изображение "вертикальное", используем contain
+            document.body.style.backgroundSize = 'contain';
+        }
+
+        document.body.style.backgroundImage = `url(${imageUrl})`;
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        localStorage.setItem('backgroundImage', imageUrl);
+    };
+}
+window.addEventListener('load', () => {
+    const savedImage = localStorage.getItem('backgroundImage');
+    if (savedImage) {
+        setBackground(savedImage);
+    }
+
+    updateBalance();
+});
+function setBackground(imageUrl) {
+    document.body.style.backgroundImage = `url(${imageUrl})`;
+    document.body.style.backgroundSize = 'cover'; // Растягиваем изображение на весь экран
+    document.body.style.backgroundPosition = 'center'; // Центрируем изображение
+    document.body.style.backgroundRepeat = 'no-repeat'; // Отключаем повторение
+    localStorage.setItem('backgroundImage', imageUrl); // Сохраняем в localStorage
+}
+
     </script>
+
+<style>
+    @media (max-width: 600px) {
+    body {
+        font-size: 14px; /* Уменьшаем размер шрифта для мобильных устройств */
+    }
+
+    .menu button {
+        padding: 10px 20px; /* Уменьшаем размер кнопок */
+        font-size: 16px;
+    }
+
+    .balance {
+        font-size: 20px; /* Уменьшаем размер текста баланса */
+    }
+
+    .roulette-container {
+        width: 250px; /* Уменьшаем размер рулетки */
+        height: 250px;
+    }
+
+    .controls input, .controls button {
+        padding: 10px; /* Уменьшаем размер элементов управления */
+        font-size: 16px;
+    }
+
+    .dice-container {
+        width: 90%; /* Увеличиваем ширину контейнера для Dice */
+        max-width: 300px; /* Ограничиваем максимальную ширину */
+    }
+
+    .dice-options select, .dice-options input {
+        width: 100%; /* Делаем элементы управления Dice на всю ширину */
+    }
+}
+@media (max-width: 375px) {
+    .roulette-container {
+        width: 200px; /* Уменьшаем размер рулетки для маленьких экранов */
+        height: 200px;
+        border: 3px solid #444; /* Уменьшаем толщину границы */
+    }
+
+    .arrow {
+        top: 5px; /* Сдвигаем стрелку выше */
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 20px solid rgb(0, 0, 0); /* Уменьшаем размер стрелки */
+    }
+}
+.roulette {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(
+        white 0deg var(--win-angle),
+        gray var(--win-angle) 360deg
+    );
+}
+@media (max-width: 375px) {
+    .menu button {
+        padding: 8px 16px; /* Уменьшаем отступы кнопок */
+        font-size: 14px; /* Уменьшаем размер шрифта */
+    }
+
+    .balance {
+        font-size: 18px; /* Уменьшаем размер текста баланса */
+    }
+
+    .controls input, .controls button {
+        padding: 8px; /* Уменьшаем отступы */
+        font-size: 14px; /* Уменьшаем размер шрифта */
+    }
+
+    .dice-container {
+        padding: 10px; /* Уменьшаем отступы */
+    }
+
+    .dice-options select, .dice-options input {
+        font-size: 14px; /* Уменьшаем размер шрифта */
+    }
+}
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Минимальная высота — весь экран */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: "Home Video";
+    transition: background-image 0.5s; /* Плавный переход фона */
+    background-size: cover; /* Растягиваем фон на весь экран */
+    background-position: center; /* Центрируем фон */
+    background-repeat: no-repeat; /* Отключаем повторение */
+}
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Минимальная высота — весь экран */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: "Home Video";
+    transition: background-image 0.5s; /* Плавный переход фона */
+    background-size: cover; /* Растягиваем фон на весь экран */
+    background-position: center; /* Центрируем фон */
+    background-repeat: no-repeat; /* Отключаем повторение */
+}
+</style>
 </body>
 </html>
-    
