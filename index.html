@@ -390,9 +390,10 @@
         const spinSoundAudio = document.getElementById('spinSound');
 
         // Состояние
-        let balance = parseInt(localStorage.getItem('balance')) || 1000;
-        let lastDepositTime = null;
-        let canRollDice = true;
+let balance = parseInt(localStorage.getItem('balance')) || 1000;
+let lastDepositTime = parseInt(localStorage.getItem('lastDepositTime')) || null; // Время последнего пополнения
+let canRollDice = true;
+
 
         // Обновление баланса
         function updateBalance() {
@@ -410,32 +411,50 @@
         }
 
         // Общая функция для пополнения баланса
-        function setupDepositButton(depositButton, depositInputContainer, depositAmountInput, confirmDepositButton) {
-            depositButton.addEventListener('click', () => {
-                depositInputContainer.style.display = 'flex';
-                depositAmountInput.value = '';
-            });
+function setupDepositButton(depositButton, depositInputContainer, depositAmountInput, confirmDepositButton) {
+    depositButton.addEventListener('click', () => {
+        depositInputContainer.style.display = 'flex';
+        depositAmountInput.value = '';
+    });
 
-            confirmDepositButton.addEventListener('click', () => {
-                const depositAmount = parseInt(depositAmountInput.value);
+    confirmDepositButton.addEventListener('click', () => {
+        const depositAmount = parseInt(depositAmountInput.value);
 
-                if (isNaN(depositAmount) || depositAmount < 0 || depositAmount > 100000) {
-                    showNotification("Введите корректную сумму пополнения от 0 до 100000.");
-                    return;
-                }
-
-                if (lastDepositTime && (Date.now() - lastDepositTime) < 300000) {
-                    showNotification("Вы можете пополнять баланс только раз в 5 минут.");
-                    return;
-                }
-
-                balance += depositAmount;
-                updateBalance();
-                lastDepositTime = Date.now();
-                depositInputContainer.style.display = 'none';
-                showNotification(`Баланс успешно пополнен на ${depositAmount} UP.`);
-            });
+        if (isNaN(depositAmount) || depositAmount < 0 || depositAmount > 100000) {
+            showNotification("Введите корректную сумму пополнения от 0 до 100000.");
+            return;
         }
+
+        // Проверка времени с последнего пополнения
+        const currentTime = Date.now();
+        const timeSinceLastDeposit = currentTime - lastDepositTime;
+
+        if (lastDepositTime && timeSinceLastDeposit < 300000) { // 5 минут = 300000 миллисекунд
+            const timeLeft = Math.ceil((300000 - timeSinceLastDeposit) / 1000); // Оставшееся время в секундах
+            showNotification(`Вы можете пополнять баланс только раз в 5 минут. Попробуйте через ${timeLeft} секунд.`);
+            return;
+        }
+
+        // Пополнение баланса
+        balance += depositAmount;
+        updateBalance();
+        lastDepositTime = currentTime;
+        localStorage.setItem('lastDepositTime', lastDepositTime); // Сохраняем время пополнения
+        depositInputContainer.style.display = 'none';
+        showNotification(`Баланс успешно пополнен на ${depositAmount} UP.`);
+    });
+}
+window.addEventListener('load', () => {
+    const savedImage = localStorage.getItem('backgroundImage');
+    if (savedImage) {
+        setBackground(savedImage);
+    }
+
+    // Загружаем время последнего пополнения
+    lastDepositTime = parseInt(localStorage.getItem('lastDepositTime')) || null;
+
+    updateBalance();
+});
         function startConfetti() {
     const duration = 1 * 1000; // 2 секунды
     const animationEnd = Date.now() + duration;
