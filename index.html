@@ -152,7 +152,7 @@
             font-size: 20px;
         }
         button:hover {
-            background: #e68900;
+            background: #ba6f00;
         }
 
         /* Стили для уведомлений */
@@ -266,7 +266,7 @@
                 transform: rotate(0deg);
             }
             100% {
-                transform: rotate(720deg);
+                transform: rotate(3600deg);
             }
         }
 
@@ -294,31 +294,30 @@
             border-top: 30px solid rgb(0, 0, 0);
             z-index: 10;
         }
-        #playDiceButton{
-            
-        }
+
+        
     </style>
 </head>
 <body>
     <div class="menu">
         <button id="playRouletteButton">Рулетка</button>
-        <button id="playDiceButton">Dice [выкл]</butaton>
+        <button id="playDiceButton">Dice [выкл]</button>
         <button id="changeBackgroundButton">Сменить фон</button> <!-- Новая кнопка -->
     </div>
     <div class="balance">Баланс: <span id="balance">1000</span> UP</div>
 
     <!-- Рулетка -->
-    <div class="roulette-container" id="rouletteContainer">
+    <div class="roulette-container" id="rouletteContainer" style="display: none;">
         <div class="arrow"></div>
         <div class="roulette" id="roulette"></div>
     </div>
-    <div class="controls" id="rouletteControls">
-        <div class="chance-input-container">
+    <div class="controls" id="rouletteControls" style="display: none;">
+        <!--<div class="chance-input-container"> !-->
             <input type="number" id="chance" placeholder="Введите шанс (0-100)" min="0" max="100">
-        </div>
-        <div class="bet-input-container">
+        <!--</div>!-->
+        <!--<div class="bet-input-container">!-->
             <input type="number" id="rouletteBet" placeholder="Введите ставку" min="0">
-        </div>
+        <!--</div>!-->
         <button id="spinButton">Крутить</button>
         <button id="depositButtonRoulette">Пополнить баланс</button>
         <div class="deposit-input-container" id="depositInputContainerRoulette">
@@ -327,8 +326,8 @@
         </div>
     </div>
 
-    <!-- Dice -->
-    <div class="dice-container" id="diceContainer">
+    <!-- Дайс -->
+    <div class="dice-container" id="diceContainer" style="display: none;">
         <div class="dice-options">
             <label for="diceType">Выберите тип игры:</label>
             <select id="diceType">
@@ -338,7 +337,6 @@
             </select>
             <label for="diceBet">Введите ставку:</label>
             <input type="number" id="diceBet" placeholder="Ставка" min="1">
-
             <label for="diceChoice" id="diceChoiceLabel">Выберите:</label>
             <select id="diceChoice"></select>
         </div>
@@ -524,21 +522,23 @@ function startConfetti() {
         });
 
         // Обработчики кнопок меню
-        playRouletteButton.addEventListener('click', () => {
-            rouletteContainer.style.display = 'flex';
-            rouletteControls.style.display = 'block';
-            diceContainer.style.display = 'none';
+playRouletteButton.addEventListener('click', () => {
+    rouletteContainer.style.display = 'flex';
+    rouletteControls.style.display = 'block';
+    diceContainer.style.display = 'none';
+    
+    // Скрыть кнопки в меню, чтобы они не мешали
+    document.querySelector('.menu').style.display = 'none';
+});
 
-            chanceInput.value = '';
-            rouletteBetInput.value = '';
-            chanceInput.focus();
-        });
+playDiceButton.addEventListener('click', () => {
+    diceContainer.style.display = 'flex';
+    rouletteContainer.style.display = 'none';
+    rouletteControls.style.display = 'none';
 
-        playDiceButton.addEventListener('click', () => {
-            diceContainer.style.display = 'flex';
-            rouletteContainer.style.display = 'none';
-            rouletteControls.style.display = 'none';
-        });
+    // Скрыть кнопки в меню, чтобы они не мешали
+    document.querySelector('.menu').style.display = 'none';
+});
 
         // Логика рулетки
         spinButton.addEventListener('click', () => {
@@ -1073,6 +1073,284 @@ body {
         top: 15%; /* Сдвигаем уведомление выше */
     }
 }
+@font-face {
+    font-family: 'Home Video';
+    src: url('HOMEVIDEO-REGULAR.OTF') format('opentype');
+}
+
+
+
+/* Стили для вашего контейнера рулетки */
+.roulette-container {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    border: 8px solid rgba(255, 255, 255, 0.2); /* Более легкая граница */
+}
+
+.controls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+
+.controls button {
+    background-color: #ff9800;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s; /* Добавлены трансформации */
+}
+
+.controls button:hover {
+    background-color: #e68900;
+    transform: scale(1.05); /* Легкое увеличение при наведении */
+}
+
+/* Стили для уведомлений */
+.notification {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    z-index: 1000;
+    text-align: center;
+    font-size: 24px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    border: 2px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.notification.show {
+    opacity: 1;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #121212, #181818);
+    color: white;
+    font-family: "Home Video", sans-serif;
+    transition: background 0.5s;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.menu button {
+    padding: 12px 24px;
+    margin: 8px;
+    border-radius: 20px;
+    border: none;
+    font-size: 18px;
+    background: linear-gradient(90deg, #ff9800, #e68900);
+    color: white;
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+}
+
+.menu button:hover {
+    background: linear-gradient(90deg, #c97800, #935800);
+    transform: scale(1.05);
+}
+
+
+
+.roulette-container {
+    position: relative;
+    width: 80vmin; /* Используем относительную единицу */
+    height: 80vmin; /* Делаем высоту равной ширине */
+    max-width: 400px; /* Ограничение максимального размера для больших экранов */
+    max-height: 400px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    border: 8px solid rgba(255, 255, 255, 0.2);
+}
+
+.controls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.controls input,
+.controls button {
+    padding: 10px;
+    margin: 8px; 
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    width: 80%;   /* Делаем элементы управления более широкими */
+    max-width: 300px; /* Максимальная ширина для элементов */
+    font-size: 16px;
+}
+
+.notification {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    z-index: 1000;
+    text-align: center;
+    font-size: 24px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    border: 2px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+/* Мобильные адаптации */
+@media (max-width: 800px) {
+    .menu {
+        margin: 10px 0;
+    }
+
+    .menu button {
+        padding: 10px 20px; 
+        font-size: 16px;
+    }
+
+    .roulette-container {
+        width: 70vmin; 
+        height: 70vmin; 
+    }
+
+    .controls input,
+    .controls button {
+        padding: 8px; 
+        font-size: 14px;
+        width: 90%;
+    }
+}
+
+@media (max-width: 600px) {
+    .menu button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .roulette-container {
+        width: 60vmin; 
+        height: 60vmin; 
+    }
+
+    .controls input,
+    .controls button {
+        padding: 6px; 
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .menu button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .roulette-container {
+        width: 50vmin; 
+        height: 50vmin; 
+    }
+
+    .controls input,
+    .controls button {
+        padding: 5px; 
+        font-size: 10px;
+    }
+}
+/* Общие стили для полей ввода ставок и процента */
+input[type="number"] {
+    padding: 10px;
+    border-radius: 12px;
+    border: 2px solid #ff9800; /* Оранжевая граница */
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
+    color: white; /* Цвет текста */
+    font-size: 16px;
+    transition: border-color 0.3s ease, background 0.3s ease; /* Плавные переходы */
+}
+
+input[type="number"]:focus {
+    border-color: #ff5722; /* Цвет границы при фокусе */
+    background: rgba(255, 255, 255, 0.2); /* Меняем фон при фокусе */
+    outline: none; /* Убираем стандартный контур */
+}
+
+/* Стили для контейнера с вводом */
+.deposit-input-container {
+    margin: 10px 0;
+}
+
+/* Кнопки */
+button {
+    background: linear-gradient(90deg, #ff9800, #e68900);
+    color: white;
+    padding: 10px 20px; /* Размер кнопок */
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s; /* Плавный переход */
+}
+
+button:hover {
+    background: linear-gradient(90deg, #e68900, #ff9800); /* Эффект при наведении */
+    transform: scale(1.05); /* Увеличение кнопки при наведении */
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+.promo-code-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .promo-code-container input {
+            width: 200px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .promo-code-container button {
+            padding: 10px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .promo-code-container button:hover {
+            background-color: #e68900;
+        }
+        .menu {
+            position: relative;
+            bottom:20px;
+        }
+
 </style>
 </body>
 </html>
