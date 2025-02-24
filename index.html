@@ -303,7 +303,28 @@
         <button id="playRouletteButton">Roulette</button>
         <button id="playDiceButton">Dice</button>
         <button id="changeBackgroundButton">Change background</button> <!-- Новая кнопка -->
+        <div class="daily-bonus-container" id="dailyBonusContainer">
+        <button id="claimDailyBonusButton">Get daily bonus</button>
+        </div>
     </div>
+    <script>
+        const dailyBonusContainer = document.getElementById('dailyBonusContainer');
+        const claimDailyBonusButton = document.getElementById('claimDailyBonusButton');
+        let lastBonusClaimDate = localStorage.getItem('lastBonusClaimDate');
+    
+        claimDailyBonusButton.addEventListener('click', () => {
+            const currentDate = new Date().toDateString();
+            if (lastBonusClaimDate !== currentDate) {
+                balance += 10000000; // Ежедневный бонус
+                updateBalance();
+                lastBonusClaimDate = currentDate;
+                localStorage.setItem('lastBonusClaimDate', lastBonusClaimDate);
+                showNotification("Ежедневный бонус получен! +10000000 UP");
+            } else {
+                showNotification("Вы уже получили бонус сегодня");
+            }
+        });
+    </script>
     <div class="balance">Баланс: <span id="balance">1000</span> UP</div>
 
     <!-- Рулетка -->
@@ -390,6 +411,8 @@
         const depositAmountDice = document.getElementById('depositAmountDice');
         const confirmDepositButtonDice = document.getElementById('confirmDepositButtonDice');
 
+
+
         // Звуки
         const winSound = document.getElementById('winSound');
         const loseSound = document.getElementById('loseSound');
@@ -400,8 +423,8 @@ let balance = parseInt(localStorage.getItem('balance')) || 1000;
 let lastDepositTime = parseInt(localStorage.getItem('lastDepositTime')) || null; // Время последнего пополнения
 let canRollDice = true;
 
-
-        // Обновление баланса
+    
+        // Обновление баланса 
         function updateBalance() {
             balanceSpan.textContent = balance.toFixed(2);
             localStorage.setItem('balance', balance.toFixed(2));
@@ -422,7 +445,6 @@ function setupDepositButton(depositButton, depositInputContainer, depositAmountI
         depositInputContainer.style.display = 'flex';
         depositAmountInput.value = '';
     });
-
     confirmDepositButton.addEventListener('click', () => {
         const depositAmount = parseInt(depositAmountInput.value);
 
