@@ -426,7 +426,7 @@ function setupDepositButton(depositButton, depositInputContainer, depositAmountI
     confirmDepositButton.addEventListener('click', () => {
         const depositAmount = parseInt(depositAmountInput.value);
 
-        if (isNaN(depositAmount) || depositAmount < 0 || depositAmount > 100000) {
+        if (isNaN(depositAmount) || depositAmount < 0 || depositAmount > 100000000000000000000000000000000) {
             showNotification("Введите корректную сумму пополнения от 0 до 100000.");
             return;
         }
