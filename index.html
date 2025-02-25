@@ -266,7 +266,7 @@
                 transform: rotate(0deg);
             }
             100% {
-                transform: rotate(7200deg);
+                transform: rotate(360deg);
             }
         }
 
@@ -588,7 +588,7 @@ playDiceButton.addEventListener('click', () => {
             const roulette = document.getElementById('roulette');
             const degrees = Math.floor(Math.random() * 7200) + 3600;
             roulette.style.background = `conic-gradient(white 0deg ${winAngle}deg, gray ${winAngle}deg 360deg)`;
-            roulette.style.transition = 'transform 12s ease-out';  // Увеличили время
+            roulette.style.transition = 'transform 6 ease-out';  // Увеличили время
             roulette.style.transform = `rotate(${degrees}deg)`;
 
             spinSoundAudio.currentTime = 0;
@@ -618,7 +618,7 @@ playDiceButton.addEventListener('click', () => {
     showNotification("Вы проиграли. Попробуйте снова!");
     loseSound.play();
 }
-            }, 12000); // Увеличили время ожидания до 10 секунд
+            }, 6000); // Увеличили время ожидания до 10 секунд
         }
 
         // Обновление выбора для Dice
