@@ -301,7 +301,7 @@
 <body>
     <div class="menu">
         <button id="playRouletteButton">Roulette</button>
-        <button id="playDiceButton">Dice</button>
+        <button id="playDiceButton">Dice [OFF]</button>
         <button id="changeBackgroundButton">Change background</button> <!-- Новая кнопка -->
         <div class="daily-bonus-container" id="dailyBonusContainer">
         <button id="claimDailyBonusButton">Get daily bonus</button>
@@ -382,7 +382,7 @@
         // Элементы
         const playRouletteButton = document.getElementById('playRouletteButton');
         const playDiceButton = document.getElementById('playDiceButton');
-        //playDiceButton.disabled = true;
+        playDiceButton.disabled = true;
         const changeBackgroundButton = document.getElementById('changeBackgroundButton');
         const rouletteContainer = document.getElementById('rouletteContainer');
         const rouletteControls = document.getElementById('rouletteControls');
