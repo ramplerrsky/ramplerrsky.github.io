@@ -33,7 +33,7 @@
         .menu button {
             padding: 15px 30px;
             margin: 10px;
-            border-radius: 15px;
+            border-radius: 4px;
             border: none;
             font-size: 20px;
             background: #ff9800;
@@ -147,7 +147,7 @@
             font-family: "Home Video";
             padding: 15px 30px;
             margin: 10px;
-            border-radius: 15px;
+            border-radius: 4px;
             border: none;
             font-size: 20px;
         }
@@ -294,7 +294,9 @@
             border-top: 30px solid rgb(0, 0, 0);
             z-index: 10;
         }
-
+        #playDiceButton{
+            background: #935800;
+        }
         
     </style>
 </head>
@@ -334,7 +336,7 @@
     </div>
     <div class="controls" id="rouletteControls" style="display: none;">
         <!--<div class="chance-input-container"> !-->
-            <input type="number" id="chance" placeholder="Введите шанс (0-100)" min="0" max="100">
+            <input type="number" id="chance" placeholder="Введите шанс (0-65)" min="0" max="100">
         <!--</div>!-->
         <!--<div class="bet-input-container">!-->
             <input type="number" id="rouletteBet" placeholder="Введите ставку" min="0">
@@ -377,6 +379,7 @@
     <audio id="winSound" src="win.mp3"></audio>
     <audio id="loseSound" src="lose.mp3"></audio>
     <audio id="spinSound" src="spint.mp3" loop></audio>
+    <audio id="clickSound" src="clickOPEN.mp3"></audio>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         // Элементы
@@ -392,6 +395,7 @@
         const diceResult = document.getElementById('diceResult');
         const balanceSpan = document.getElementById('balance');
         const notification = document.getElementById('notification');
+
 
         // Элементы для рулетки
         const depositButtonRoulette = document.getElementById('depositButtonRoulette');
@@ -417,6 +421,7 @@
         const winSound = document.getElementById('winSound');
         const loseSound = document.getElementById('loseSound');
         const spinSoundAudio = document.getElementById('spinSound');
+        const clickSound = document.getElementById('clickSound');
 
         // Состояние
 let balance = parseInt(localStorage.getItem('balance')) || 1000;
@@ -436,7 +441,7 @@ let canRollDice = true;
             notification.classList.add('show');
             setTimeout(() => {
                 notification.classList.remove('show');
-            }, 3000);
+            }, 1500);
         }
 
         // Общая функция для пополнения баланса
@@ -567,8 +572,8 @@ playDiceButton.addEventListener('click', () => {
             const chance = parseInt(chanceInput.value);
             const bet = parseInt(rouletteBetInput.value);
 
-            if (isNaN(chance) || chance < 0 || chance > 100) {
-                showNotification("Введите корректный шанс от 0 до 100");
+            if (isNaN(chance) || chance < 0 || chance > 65) {
+                showNotification("Введите корректный шанс от 0 до 65");
                 return;
             }
 
@@ -584,42 +589,47 @@ playDiceButton.addEventListener('click', () => {
         });
 
         function spinRoulette(chance, bet) {
-            const winAngle = (chance / 100) * 360;
-            const roulette = document.getElementById('roulette');
-            const degrees = Math.floor(Math.random() * 7200) + 3600;
-            roulette.style.background = `conic-gradient(white 0deg ${winAngle}deg, gray ${winAngle}deg 360deg)`;
-            roulette.style.transition = 'transform 6 ease-out';  // Увеличили время
-            roulette.style.transform = `rotate(${degrees}deg)`;
+    const winAngle = (chance / 100) * 360; // Угол выигрыша
+    const roulette = document.getElementById('roulette');
+    const degrees = Math.floor(Math.random() * 7200) + 3600; // Случайный угол вращения
 
-            spinSoundAudio.currentTime = 0;
-            spinSoundAudio.play();
+    // Устанавливаем градиент на рулетке
+    roulette.style.background = `conic-gradient(white 0deg ${winAngle}deg, gray ${winAngle}deg 360deg)`;
+    roulette.style.transition = 'transform 6s ease-out'; // Увеличили время
+    roulette.style.transform = `rotate(${degrees}deg)`; // Используем обратные кавычки
 
-            setTimeout(() => {
-                spinSoundAudio.pause();
-                spinSoundAudio.currentTime = 0;
+   
+    // Воспроизводим звук вращения
+    spinSoundAudio.currentTime = 0;
+    spinSoundAudio.play();
 
-                const finalRotation = degrees % 360;
-                const win = finalRotation >= (360 - winAngle);
-                const payoutMultiplier = 100 / chance;
+    setTimeout(() => {
+        spinSoundAudio.pause();
+        spinSoundAudio.currentTime = 0;
 
-                // Рассчитываем общий выигрыш (включая ставку)
-                const totalPayout = win ? bet * payoutMultiplier : 0;
-                // Вычитаем ставку, чтобы получить чистый выигрыш
-                const payout = win ? totalPayout - bet : 0;
+        const finalRotation = degrees % 360; // Итоговый угол
+        const win = finalRotation >= (360 - winAngle); // Проверка на выигрыш
+        const payoutMultiplier = 100 / chance; // Множитель выигрыша
 
-                if (win) {
-    balance += (payout + bet);
-    updateBalance();
-    showNotification(`Вы выиграли ${((payout + bet)).toFixed(2)} UP!`);
-    winSound.play();
-    startConfetti(); // Запускаем фейерверки
-} else {
-    updateBalance();
-    showNotification("Вы проиграли. Попробуйте снова!");
-    loseSound.play();
-}
-            }, 6000); // Увеличили время ожидания до 10 секунд
+        // Рассчитываем общий выигрыш (включая ставку)
+        const totalPayout = win ? bet * payoutMultiplier : 0;
+        // Вычитаем ставку, чтобы получить чистый выигрыш
+        const payout = win ? totalPayout - bet : 0;
+
+        if (win) {
+            balance += (payout + bet); // Обновляем баланс
+            updateBalance();
+            showNotification(`Вы выиграли ${((payout + bet)).toFixed(2)} UP!`); // Используем обратные кавычки
+            winSound.play();
+            startConfetti(); // Запускаем фейерверки
+        } else {
+            updateBalance();
+            showNotification("Вы проиграли. Попробуйте снова!");
+            loseSound.play();
         }
+    }, 6000); // Ожидание 6 секунд (время анимации)
+}
+
 
         // Обновление выбора для Dice
         function updateDiceChoiceOptions(diceType) {
@@ -1177,7 +1187,7 @@ body {
 .menu button {
     padding: 12px 24px;
     margin: 8px;
-    border-radius: 20px;
+    border-radius: 7px;
     border: none;
     font-size: 18px;
     background: linear-gradient(90deg, #ff9800, #e68900);
