@@ -1,0 +1,26 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Звук при загрузке</title>
+    </head>
+    <body>
+
+        <audio id="myAudio" src="GOTOG.mp3" preload="auto"></audio>
+        <button id="playButton">Включить звук</button>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var audio = document.getElementById("myAudio");
+                var playButton = document.getElementById("playButton");
+
+                playButton.addEventListener("click", function() {
+                    audio.volume = 1.0;
+                    audio.play().catch(function(error) {
+                        console.error("Ошибка при воспроизведении аудио: ", error);
+                    });
+                });
+            });
+        </script>
+
+    </body>
+    </html>
